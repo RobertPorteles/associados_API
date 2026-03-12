@@ -8,49 +8,76 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Associados")
 public class Associado {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "nome_completo", unique = true)
-    private String nome_completo;
-    
+    private String nomeCompleto;
+
     @Column(name = "cpf", unique = true)
     private String cpf;
-    
-    @Column(name = "data_nascimento")
-    private Date data_nascimento;
-    
-    @Column(name = "email_principal")
-    private String email_principal;
-    
-    @Column(name = "telefone_principal")
-    private String telefone_principal;
-    
-    @Column(name = "data_ingresso")
-    private Date data_ingresso;
-    
-    @Column(name = "data_vencimento")
-    private Date data_vencimento;
-    
-    @Column(name = "tipo_origem_equipe")
-    private String tipo_origem_equipe;
-    
-    @Column(name = "status_ativo")
-    private Boolean status_ativo;
-    
-    @Column(name = "criado_em")
-    private Timestamp criado_em;
-    
-    @Column(name = "atualizado_em")
-    private Timestamp atualizado_em;
 
+    @Column(name = "data_nascimento")
+    private Date dataNascimento;
+
+    @Column(name = "email_principal")
+    private String emailPrincipal;
+
+    @Column(name = "telefone_principal")
+    private String telefonePrincipal;
+
+    @Column(name = "data_ingresso")
+    private Date dataIngresso;
+
+    @Column(name = "data_vencimento")
+    private Date dataVencimento;
+
+    @Column(name = "tipo_origem_equipe")
+    private String tipoOrigemEquipe;
+
+    @Column(name = "status_ativo")
+    private Boolean statusAtivo;
+
+    @Column(name = "criado_em")
+    private Timestamp criadoEm;
+
+    @Column(name = "atualizado_em")
+    private Timestamp atualizadoEm;
+
+    // FK: id_equipe
+    
+   @ManyToOne
+    @JoinColumn(name = "id_equipe")
+    private Equipe equipe;
+
+    //cluster
+
+    @ManyToOne
+    @JoinColumn(name = "id_cluster")
+    private Cluster cluster;
+
+    @ManyToOne
+    @JoinColumn(name = "id_atuacao_especifica")
+    private AtuacaoEspecifica atuacaoEspecifica;
+
+    @ManyToOne
+    @JoinColumn(name = "id_padrinho")
+    private Associado padrinho;
+
+    @ManyToOne
+    @JoinColumn(name = "id_equipe_origem")
+    private Equipe equipeOrigem;
 }
+
    /*
 
 - 

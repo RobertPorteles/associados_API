@@ -23,31 +23,31 @@ public class Equipe {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Long idEquipe;
 
-	@Column
+	@Column(name = "nomeEquipe", unique = true)
 	public String nomeEquipe;
 
-	@Column
+	@Column(name = "dataInicioFormacao")
 	public LocalDate dataInicioFormacao;
 
-	@Column
+	@Column(name = "dataPrevisaoLancamento")
 	public LocalDate dataPrevisaoLancamento;
 
-	@Column
+	@Column(name = "dataEfetivaLancamento")
 	public LocalDate dataEfetivaLancamento;
 	
-	@Column
+	@Column(name = "diaReuniao")
 	public String diaReuniao;
-
+	@Column(name = "horarioReuniao")
 	public LocalTime horarioReuniao;
-
+	@Column(name = "modeloReuniao")
 	public String modeloReuniao;
-
+	@Column(name = "linkReuniaoOnline")
 	public String linkReuniaoOnline;
-
+	@Column(name = "statusEquipe")
 	public String statusEquipe;
-
+	@Column(name = "criadoEm")
 	public LocalDateTime criadoEm;
-
+	@Column(name = "atualizadoEm")
 	public LocalDateTime atualizadoEm;
 
 }
