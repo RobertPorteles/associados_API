@@ -65,6 +65,8 @@ public class Associado {
     @JoinColumn(name = "id_cluster")
     private Cluster cluster;
 
+    
+
     @ManyToOne
     @JoinColumn(name = "id_atuacao_especifica")
     private AtuacaoEspecifica atuacaoEspecifica;
