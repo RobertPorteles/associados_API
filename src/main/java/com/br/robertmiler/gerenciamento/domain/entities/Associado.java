@@ -1,5 +1,8 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
+import java.security.Timestamp;
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,44 +30,79 @@ public class Associado {
 	@Column(name = "cpf", unique = true)
 	private String cpf;
 
-	/*
-	 * @Column(name = "data_nascimento") private Date data_nascimento;
-	 * 
-	 * @Column(name = "email_principal") private String email_principal;
-	 * 
-	 * @Column(name = "telefone_principal") private String telefone_principal;
-	 * 
-	 * @Column(name = "data_ingresso") private Date data_ingresso;
-	 * 
-	 * @Column(name = "data_vencimento") private Date data_vencimento;
-	 * 
-	 * @Column(name = "tipo_origem_equipe") private String tipo_origem_equipe;
-	 * 
-	 * @Column(name = "status_ativo") private Boolean status_ativo;
-	 * 
-	 * @Column(name = "criado_em") private Timestamp criado_em;
-	 * 
-	 * @Column(name = "atualizado_em") private Timestamp atualizado_em;
-	 */
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "equipe_origem_id", nullable = false)
-	private Equipe equipeOrigem;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "equipe_atual_id", nullable = false)
 	private Equipe equipeAtual;
 
+    @Column(name = "data_nascimento")
+    private Date dataNascimento;
+
+    @Column(name = "email_principal")
+    private String emailPrincipal;
+
+    @Column(name = "telefone_principal")
+    private String telefonePrincipal;
+
+    @Column(name = "data_ingresso")
+    private Date dataIngresso;
+
+    @Column(name = "data_vencimento")
+    private Date dataVencimento;
+
+    @Column(name = "tipo_origem_equipe")
+    private String tipoOrigemEquipe;
+
+    @Column(name = "status_ativo")
+    private Boolean statusAtivo;
+
+    @Column(name = "criado_em")
+    private Timestamp criadoEm;
+
+    @Column(name = "atualizado_em")
+    private Timestamp atualizadoEm;
+
+    // FK: id_equipe
+    
+   @ManyToOne
+    @JoinColumn(name = "id_equipe")
+    private Equipe equipe;
+
+    //cluster
+
+    @ManyToOne
+    @JoinColumn(name = "id_cluster")
+    private Cluster cluster;
+
+    
+
+    @ManyToOne
+    @JoinColumn(name = "id_atuacao_especifica")
+    private AtuacaoEspecifica atuacaoEspecifica;
+
+    @ManyToOne
+    @JoinColumn(name = "id_padrinho")
+    private Associado padrinho;
+
+    @ManyToOne
+    @JoinColumn(name = "id_equipe_origem")
+    private Equipe equipeOrigem;
 }
-/*
- * 
- * - - - id_equipe **BIGINT (FK)** - id_cluster **BIGINT (FK)** -
- * id_atuacao_especifica **BIGINT (FK)** - id_padrinho **BIGINT (FK)**
- * 
- * - tipo_origem_equipe **VARCHAR(30)**
- * 
- * - id_equipe_origem **BIGINT (FK)**
- * 
- * - status_ativo **BOOLEAN** - criado_em **TIMESTAMP** - atualizado_em
- * **TIMESTAMP** }
+
+   /*
+
+- 
+-
+-   id_equipe **BIGINT (FK)**
+-   id_cluster **BIGINT (FK)**
+-   id_atuacao_especifica **BIGINT (FK)**
+-   id_padrinho **BIGINT (FK)**
+
+-   tipo_origem_equipe **VARCHAR(30)**
+
+-   id_equipe_origem **BIGINT (FK)**
+
+-   status_ativo **BOOLEAN**
+-   criado_em **TIMESTAMP**
+-   atualizado_em **TIMESTAMP**
+}
  */
