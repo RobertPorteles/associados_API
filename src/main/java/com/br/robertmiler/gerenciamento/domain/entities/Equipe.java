@@ -1,9 +1,5 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,28 +22,26 @@ public class Equipe {
 	@Column
 	public String nomeEquipe;
 
-	@Column
-	public LocalDate dataInicioFormacao;
-
-	@Column
-	public LocalDate dataPrevisaoLancamento;
-
-	@Column
-	public LocalDate dataEfetivaLancamento;
-	
-	@Column
-	public String diaReuniao;
-
-	public LocalTime horarioReuniao;
-
-	public String modeloReuniao;
-
-	public String linkReuniaoOnline;
-
-	public String statusEquipe;
-
-	public LocalDateTime criadoEm;
-
-	public LocalDateTime atualizadoEm;
+	/*
+	 * @Column public LocalDate dataInicioFormacao;
+	 * 
+	 * @Column public LocalDate dataPrevisaoLancamento;
+	 * 
+	 * @Column public LocalDate dataEfetivaLancamento;
+	 * 
+	 * @Column public String diaReuniao;
+	 * 
+	 * public LocalTime horarioReuniao;
+	 * 
+	 * public String modeloReuniao;
+	 * 
+	 * public String linkReuniaoOnline;
+	 * 
+	 * public String statusEquipe;
+	 * 
+	 * public LocalDateTime criadoEm;
+	 * 
+	 * public LocalDateTime atualizadoEm;
+	 */
 
 }
