@@ -4,7 +4,7 @@ import java.security.Timestamp;
 import java.sql.Date;
 import java.util.UUID;
 
-import jakarta.annotation.Generated;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
