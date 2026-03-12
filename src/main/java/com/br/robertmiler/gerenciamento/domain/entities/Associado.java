@@ -1,30 +1,38 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
 import java.security.Timestamp;
-import java.sql.Date;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Associados")
+@Getter
+@Setter
 public class Associado {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long idAssociado;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Column(name = "nome_completo", unique = true)
+	private String nomeCompleto;
 
-    @Column(name = "nome_completo", unique = true)
-    private String nomeCompleto;
+	@Column(name = "cpf", unique = true)
+	private String cpf;
 
-    @Column(name = "cpf", unique = true)
-    private String cpf;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "equipe_atual_id", nullable = false)
+	private Equipe equipeAtual;
 
     @Column(name = "data_nascimento")
     private Date dataNascimento;
