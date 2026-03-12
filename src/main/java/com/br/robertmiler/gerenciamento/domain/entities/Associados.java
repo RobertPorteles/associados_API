@@ -36,8 +36,9 @@ public class Associados {
     private String tipo_origem_equipe;
     @Column(name = "status_ativo")
     private Boolean status_ativo;
-    @Column(name = "criado")
+    @Column(name = "criado_em")
     private Timestamp criado_em;
+    @Column(name= "atualizado_em")
     private Timestamp atualizado_em;
 
 }
