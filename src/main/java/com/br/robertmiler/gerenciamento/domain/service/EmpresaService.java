@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.EmpresaRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.EmpresaResponseDto;
+import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.Empresa;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
+import com.br.robertmiler.gerenciamento.domain.mappers.EmpresaMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.EmpresaRepository;
 
@@ -15,35 +17,29 @@ import com.br.robertmiler.gerenciamento.infrastructure.repositories.EmpresaRepos
 public class EmpresaService {
 
 	@Autowired
-	private EmpresaRepository empresaRepository;
+    private EmpresaRepository empresaRepository;
 
-	@Autowired
-	private AssociadoRepository associadoRepository;
+    @Autowired
+    private AssociadoRepository associadoRepository;
+
+    @Autowired
+    private EmpresaMapper empresaMapper;
+
+	
 
 	@Transactional
-	public EmpresaResponseDto cadastrarEmpresa(EmpresaRequestDto request) {
+	public EmpresaResponseDto criar(EmpresaRequestDto requestDto) {
+        // Busca e validação ficam aqui
+        Associado associado = associadoRepository.findById(requestDto.getIdAssociado())
+                .orElseThrow(() -> new NaoEncontradoException("Associado não encontrado."));
 
-		var associadoFound = associadoRepository.findById(request.getIdAssociado())
-				.orElseThrow(() -> new NaoEncontradoException("Associado não encontrado."));
+        // Mapper apenas converte
+        Empresa empresa = empresaMapper.toEntity(requestDto, associado);
 
-		Empresa novaEmpresa = new Empresa();
-		novaEmpresa.setRazaoSocial(request.getRazaoSocial());
-		novaEmpresa.setCnpj(request.getCnpj());
-		novaEmpresa.setNomeFantasia(request.getNomeFantasia());
-		novaEmpresa.setCargo(request.getCargo());
-		novaEmpresa.setAssociado(associadoFound);
+        // Persistência fica no Service
+        empresaRepository.save(empresa);
 
-		empresaRepository.save(novaEmpresa);
-
-		EmpresaResponseDto response = new EmpresaResponseDto();
-		response.setIdEmpresa(novaEmpresa.getIdEmpresa());
-		response.setRazaoSocial(novaEmpresa.getRazaoSocial());
-		response.setCnpj(novaEmpresa.getCnpj());
-		response.setNomeFantasia(novaEmpresa.getNomeFantasia());
-		response.setCargo(novaEmpresa.getCargo());
-		response.setNomeAssociado(novaEmpresa.getAssociado().getNomeCompleto());
-
-		return response;
-	}
+        return empresaMapper.toResponse(empresa);
+    }
 
 }

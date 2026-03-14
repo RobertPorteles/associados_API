@@ -12,5 +12,6 @@ public class EmpresaRequestDto {
 	private String cnpj;
 	private String nomeFantasia;
 	private String cargo;
+	
 
 }
