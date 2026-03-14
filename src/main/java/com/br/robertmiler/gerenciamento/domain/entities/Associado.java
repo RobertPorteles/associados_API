@@ -20,6 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Associado {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long idAssociado;
@@ -72,8 +73,6 @@ public class Associado {
     @ManyToOne
     @JoinColumn(name = "id_cluster")
     private Cluster cluster;
-
-    
 
     @ManyToOne
     @JoinColumn(name = "id_atuacao_especifica")
