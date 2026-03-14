@@ -29,14 +29,17 @@ public class EmpresaService {
 
 	@Transactional
 	public EmpresaResponseDto criar(EmpresaRequestDto requestDto) {
-        // Busca e validação ficam aqui
+       
         Associado associado = associadoRepository.findById(requestDto.getIdAssociado())
                 .orElseThrow(() -> new NaoEncontradoException("Associado não encontrado."));
 
-        // Mapper apenas converte
+        /*
+		ToEntity converte de request para entidade, toResponse de Entidade para response.
+		Botei pra pegar o associado no paramentro e salvar!
+		*/
         Empresa empresa = empresaMapper.toEntity(requestDto, associado);
 
-        // Persistência fica no Service
+        
         empresaRepository.save(empresa);
 
         return empresaMapper.toResponse(empresa);

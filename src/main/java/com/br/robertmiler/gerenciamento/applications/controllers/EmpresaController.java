@@ -20,7 +20,7 @@ public class EmpresaController {
 
 	@PostMapping
 	public ResponseEntity<EmpresaResponseDto> postCadastrarEmpresa(@RequestBody EmpresaRequestDto request) {
-		var response = empresaService.cadastrarEmpresa(request);
+		var response = empresaService.criar(request);
 		return ResponseEntity.status(201).body(response);
 	}
 
