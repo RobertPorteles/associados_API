@@ -8,7 +8,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
-import com.br.robertmiler.gerenciamento.domain.entities.Cluster;
+
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
