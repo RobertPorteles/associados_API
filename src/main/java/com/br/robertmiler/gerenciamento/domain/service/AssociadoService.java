@@ -7,6 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
+import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
+import com.br.robertmiler.gerenciamento.domain.entities.Cluster;
+import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 
 @Service
@@ -16,30 +20,45 @@ public class AssociadoService {
 	private EquipeService equipeService;
 
 	@Autowired
+	private ClusterService clusterService;
+
+	@Autowired
 	private AssociadoRepository associadoRepository;
+
+	@Autowired
+	private AssociadoEnderecoResidencialRepository enderecoResidencialRepository;
+
+	@Autowired
+	private AssociadoMapper associadoMapper;
 	
 	@Transactional
 	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request) {
 
 		var equipeFound = equipeService.buscarEquipeEntity(request.getIdEquipe());
+		var clusterFound = clusterService.buscarClusterEntity(request.getIdCluster());
 
 		Associado novoAssociado = new Associado();
 		novoAssociado.setNomeCompleto(request.getNomeCompleto());
 		novoAssociado.setCpf(request.getCpf());
 		novoAssociado.setEquipeAtual(equipeFound);
 		novoAssociado.setEquipeOrigem(equipeFound);
+		novoAssociado.setCluster(clusterFound);
 		
 		associadoRepository.save(novoAssociado);
-		
-		
 
-		AssociadoResponseDto response = new AssociadoResponseDto();
-		response.setIdAssociado(novoAssociado.getIdAssociado());
-		response.setNomeCompleto(novoAssociado.getNomeCompleto());
-		response.setCpf(novoAssociado.getCpf());
-		response.setNomeEquipe(novoAssociado.getEquipeAtual().getNomeEquipe());
+		AssociadoEnderecoResidencial novoEndereco = new AssociadoEnderecoResidencial();
+		novoEndereco.setRua(request.getRua());
+		novoEndereco.setNumero(request.getNumero());
+		novoEndereco.setComplemento(request.getComplemento());
+		novoEndereco.setBairro(request.getBairro());
+		novoEndereco.setCidade(request.getCidade());
+		novoEndereco.setEstado(request.getEstado());
+		novoEndereco.setCep(request.getCep());
+		novoEndereco.setAssociado(novoAssociado);
 
-		return response;
+		enderecoResidencialRepository.save(novoEndereco);
+
+		return associadoMapper.montarDtoResposta(novoAssociado);
 
 	}
 
