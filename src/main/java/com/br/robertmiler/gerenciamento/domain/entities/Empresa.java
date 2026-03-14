@@ -1,6 +1,5 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,17 +15,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "AtuacaoEspecifica")
-public class AtuacaoEspecifica {
+@Table(name = "empresa")
+public class Empresa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private Long idEmpresa;
 
-    @Column(name = "nome")
-    private String nome;
+	@Column
+	private String razaoSocial;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cluster")   
-    private Cluster cluster;
+	@Column(unique = true)
+	private String cnpj;
+
+	@Column
+	private String nomeFantasia;
+
+	@Column
+	private String cargo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "associado_id", nullable = false)
+	private Associado associado;
+
 }
