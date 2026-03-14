@@ -13,4 +13,5 @@ public class AssociadoRequestDto {
 
 	private Long idEquipe;
 
+	
 }
