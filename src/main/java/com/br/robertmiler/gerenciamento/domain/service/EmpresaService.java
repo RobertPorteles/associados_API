@@ -46,4 +46,9 @@ public class EmpresaService {
 		return response;
 	}
 
+	public Empresa buscarEmpresaEntity(Long idEmpresa) {
+		return empresaRepository.findById(idEmpresa)
+				.orElseThrow(() -> new NaoEncontradoException("Empresa não encontrada."));
+	}
+
 }

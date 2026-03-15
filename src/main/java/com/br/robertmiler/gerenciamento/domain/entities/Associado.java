@@ -62,12 +62,6 @@ public class Associado {
     @Column(name = "atualizado_em")
     private Timestamp atualizadoEm;
 
-    // FK: id_equipe
-    
-   @ManyToOne
-    @JoinColumn(name = "id_equipe")
-    private Equipe equipe;
-
     //cluster
 
     @ManyToOne

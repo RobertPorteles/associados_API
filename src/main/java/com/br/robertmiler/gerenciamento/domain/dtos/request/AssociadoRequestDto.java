@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +13,25 @@ public class AssociadoRequestDto {
 
 	private String cpf;
 
+	private String emailPrincipal;
+
+	private String telefonePrincipal;
+
+	private Date dataNascimento;
+
+	private Date dataIngresso;
+
+	private Date dataVencimento;
+
+	private String tipoOrigemEquipe;
+
+	private Boolean statusAtivo;
+
 	private Long idEquipe;
 
 	private Long idCluster;
+
+	private Long idAtuacaoEspecifica;
 
 	private String rua;
 
