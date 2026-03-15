@@ -28,11 +28,14 @@ public class ClusterService {
 		return clusterMapper.montarDtoResposta(novoCluster);
 	}
 
-	public Cluster buscarClusterEntity(Long idCluster) {
-		var clusterFound = clusterRepository.findById(idCluster)
-				.orElseThrow(() -> new NaoEncontradoException("Cluster não encontrado."));
+	public ClusterResponseDto buscarClusterPorId(Long idCluster) {
+		var clusterFound = buscarClusterEntity(idCluster);
+		return clusterMapper.montarDtoResposta(clusterFound);
+	}
 
-		return clusterFound;
+	public Cluster buscarClusterEntity(Long idCluster) {
+		return clusterRepository.findById(idCluster)
+				.orElseThrow(() -> new NaoEncontradoException("Cluster não encontrado."));
 	}
 
 }

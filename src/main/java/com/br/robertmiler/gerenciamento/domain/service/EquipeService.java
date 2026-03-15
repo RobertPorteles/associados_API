@@ -28,11 +28,19 @@ public class EquipeService {
 		return response;
 	}
 
-	public Equipe buscarEquipeEntity(Long idEquipe) {
-		var equipeFound = equipeRepository.findById(idEquipe)
-				.orElseThrow(() -> new NaoEncontradoException("Equipe não encontrada."));
+	public EquipeResponseDto buscarEquipePorId(Long idEquipe) {
+		var equipeFound = buscarEquipeEntity(idEquipe);
 
-		return equipeFound;
+		EquipeResponseDto response = new EquipeResponseDto();
+		response.setIdEquipe(equipeFound.getIdEquipe());
+		response.setNomeEquipe(equipeFound.getNomeEquipe());
+
+		return response;
+	}
+
+	public Equipe buscarEquipeEntity(Long idEquipe) {
+		return equipeRepository.findById(idEquipe)
+				.orElseThrow(() -> new NaoEncontradoException("Equipe não encontrada."));
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.response;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Getter;
@@ -19,11 +20,11 @@ public class AssociadoResponseDto {
 
 	private String telefonePrincipal;
 
-	private Date dataNascimento;
+	private LocalDate dataNascimento;
 
-	private Date dataIngresso;
+	private LocalDate dataIngresso;
 
-	private Date dataVencimento;
+	private LocalDate dataVencimento;
 
 	private String tipoOrigemEquipe;
 

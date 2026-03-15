@@ -34,11 +34,14 @@ public class AtuacaoEspecificaService {
 		return atuacaoEspecificaMapper.montarDtoResposta(novaAtuacao);
 	}
 
-	public AtuacaoEspecifica buscarAtuacaoEspecificaEntity(Long idAtuacaoEspecifica) {
-		var atuacaoFound = atuacaoEspecificaRepository.findById(idAtuacaoEspecifica)
-				.orElseThrow(() -> new NaoEncontradoException("Atuação específica não encontrada."));
+	public AtuacaoEspecificaResponseDto buscarAtuacaoEspecificaPorId(Long idAtuacaoEspecifica) {
+		var atuacaoFound = buscarAtuacaoEspecificaEntity(idAtuacaoEspecifica);
+		return atuacaoEspecificaMapper.montarDtoResposta(atuacaoFound);
+	}
 
-		return atuacaoFound;
+	public AtuacaoEspecifica buscarAtuacaoEspecificaEntity(Long idAtuacaoEspecifica) {
+		return atuacaoEspecificaRepository.findById(idAtuacaoEspecifica)
+				.orElseThrow(() -> new NaoEncontradoException("Atuação específica não encontrada."));
 	}
 
 }

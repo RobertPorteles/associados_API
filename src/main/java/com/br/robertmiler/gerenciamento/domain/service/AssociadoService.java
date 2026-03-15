@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.domain.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +53,8 @@ public class AssociadoService {
 		novoAssociado.setDataVencimento(request.getDataVencimento());
 		novoAssociado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
 		novoAssociado.setStatusAtivo(request.getStatusAtivo());
+		novoAssociado.setCriadoEm(LocalDateTime.now());
+		novoAssociado.setAtualizadoEm(LocalDateTime.now());
 		novoAssociado.setEquipeAtual(equipeFound);
 		novoAssociado.setEquipeOrigem(equipeFound);
 		novoAssociado.setCluster(clusterFound);
@@ -72,6 +76,11 @@ public class AssociadoService {
 
 		return associadoMapper.montarDtoResposta(novoAssociado);
 
+	}
+
+	public AssociadoResponseDto buscarAssociadoPorId(Long idAssociado) {
+		var associadoFound = buscarAssociadoEntity(idAssociado);
+		return associadoMapper.montarDtoResposta(associadoFound);
 	}
 
 	public Associado buscarAssociadoEntity(Long idAssociado) {
