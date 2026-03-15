@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AtuacaoEspecificaRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AtuacaoEspecificaResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.AtuacaoEspecifica;
+import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.mappers.AtuacaoEspecificaMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AtuacaoEspecificaRepository;
 
@@ -31,6 +32,13 @@ public class AtuacaoEspecificaService {
 		atuacaoEspecificaRepository.save(novaAtuacao);
 
 		return atuacaoEspecificaMapper.montarDtoResposta(novaAtuacao);
+	}
+
+	public AtuacaoEspecifica buscarAtuacaoEspecificaEntity(Long idAtuacaoEspecifica) {
+		var atuacaoFound = atuacaoEspecificaRepository.findById(idAtuacaoEspecifica)
+				.orElseThrow(() -> new NaoEncontradoException("Atuação específica não encontrada."));
+
+		return atuacaoFound;
 	}
 
 }
