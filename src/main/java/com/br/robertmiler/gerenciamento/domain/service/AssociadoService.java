@@ -10,6 +10,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
+import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
@@ -38,6 +39,10 @@ public class AssociadoService {
 	
 	@Transactional
 	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request) {
+
+		if (associadoRepository.findByCpf(request.getCpf()).isPresent()) {
+			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
+		}
 
 		var equipeFound = equipeService.buscarEquipeEntity(request.getIdEquipe());
 		var clusterFound = clusterService.buscarClusterEntity(request.getIdCluster());
