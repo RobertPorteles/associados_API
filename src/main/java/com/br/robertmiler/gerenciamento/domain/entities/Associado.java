@@ -1,6 +1,8 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
 import java.security.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -36,7 +38,7 @@ public class Associado {
 	private Equipe equipeAtual;
 
     @Column(name = "data_nascimento")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     @Column(name = "email_principal")
     private String emailPrincipal;
@@ -45,10 +47,10 @@ public class Associado {
     private String telefonePrincipal;
 
     @Column(name = "data_ingresso")
-    private Date dataIngresso;
+    private LocalDate dataIngresso;
 
     @Column(name = "data_vencimento")
-    private Date dataVencimento;
+    private LocalDate dataVencimento;
 
     @Column(name = "tipo_origem_equipe")
     private String tipoOrigemEquipe;
@@ -57,10 +59,10 @@ public class Associado {
     private Boolean statusAtivo;
 
     @Column(name = "criado_em")
-    private Timestamp criadoEm;
+    private LocalDateTime criadoEm;
 
     @Column(name = "atualizado_em")
-    private Timestamp atualizadoEm;
+    private LocalDateTime atualizadoEm;
 
     //cluster
 

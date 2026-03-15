@@ -46,6 +46,20 @@ public class EmpresaService {
 		return response;
 	}
 
+	public EmpresaResponseDto buscarEmpresaPorId(Long idEmpresa) {
+		var empresaFound = buscarEmpresaEntity(idEmpresa);
+
+		EmpresaResponseDto response = new EmpresaResponseDto();
+		response.setIdEmpresa(empresaFound.getIdEmpresa());
+		response.setRazaoSocial(empresaFound.getRazaoSocial());
+		response.setCnpj(empresaFound.getCnpj());
+		response.setNomeFantasia(empresaFound.getNomeFantasia());
+		response.setCargo(empresaFound.getCargo());
+		response.setNomeAssociado(empresaFound.getAssociado().getNomeCompleto());
+
+		return response;
+	}
+
 	public Empresa buscarEmpresaEntity(Long idEmpresa) {
 		return empresaRepository.findById(idEmpresa)
 				.orElseThrow(() -> new NaoEncontradoException("Empresa não encontrada."));
