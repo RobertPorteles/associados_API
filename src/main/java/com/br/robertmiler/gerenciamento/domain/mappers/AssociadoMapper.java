@@ -13,7 +13,16 @@ public class AssociadoMapper {
 		response.setIdAssociado(associado.getIdAssociado());
 		response.setNomeCompleto(associado.getNomeCompleto());
 		response.setCpf(associado.getCpf());
+		response.setEmailPrincipal(associado.getEmailPrincipal());
+		response.setTelefonePrincipal(associado.getTelefonePrincipal());
+		response.setDataNascimento(associado.getDataNascimento());
+		response.setDataIngresso(associado.getDataIngresso());
+		response.setDataVencimento(associado.getDataVencimento());
+		response.setTipoOrigemEquipe(associado.getTipoOrigemEquipe());
+		response.setStatusAtivo(associado.getStatusAtivo());
 		response.setNomeEquipe(associado.getEquipeAtual().getNomeEquipe());
+		response.setNomeCluster(associado.getCluster().getNome());
+		response.setNomeAtuacaoEspecifica(associado.getAtuacaoEspecifica().getNome());
 		return response;
 	}
 
