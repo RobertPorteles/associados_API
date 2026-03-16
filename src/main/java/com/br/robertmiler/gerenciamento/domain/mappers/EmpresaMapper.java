@@ -24,7 +24,7 @@ public class EmpresaMapper {
         return novaEmpresa;
     }
 
-    public EmpresaResponseDto toResponse(Empresa empresa) {
+    public EmpresaResponseDto montarDtoResposta(Empresa empresa) {
         EmpresaResponseDto responseDto = new EmpresaResponseDto();
 
         responseDto.setIdEmpresa(empresa.getIdEmpresa());
