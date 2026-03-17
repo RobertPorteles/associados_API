@@ -22,16 +22,16 @@ public class Empresa {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long idEmpresa;
 
-	@Column
+	@Column(name = "razaoSocial")
 	private String razaoSocial;
 
-	@Column(unique = true)
+	@Column(name = "cnpj", unique = true)
 	private String cnpj;
 
-	@Column
+	@Column(name = "nomeFantasia")
 	private String nomeFantasia;
 
-	@Column
+	@Column(name = "cargo")
 	private String cargo;
 
 	@ManyToOne(fetch = FetchType.LAZY)

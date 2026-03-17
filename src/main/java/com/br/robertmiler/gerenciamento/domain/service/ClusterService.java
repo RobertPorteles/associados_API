@@ -38,4 +38,5 @@ public class ClusterService {
 				.orElseThrow(() -> new NaoEncontradoException("Cluster não encontrado."));
 	}
 
+	
 }
