@@ -3,6 +3,7 @@ package com.br.robertmiler.gerenciamento.domain.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,7 +56,7 @@ public class Associado {
     private String tipoOrigemEquipe;
 
     @Column(name = "status_ativo")
-    private Boolean statusAtivo;
+    private StatusAssociado statusAssociado;
 
     @Column(name = "criado_em")
     private LocalDateTime criadoEm;

@@ -43,7 +43,7 @@ public class AssociadoMapper {
 		novoAssociado.setDataIngresso(request.getDataIngresso());
 		novoAssociado.setDataVencimento(request.getDataVencimento());
 		novoAssociado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
-		novoAssociado.setStatusAtivo(request.getStatusAtivo());
+		novoAssociado.setStatusAssociado(request.getStatusAssociado());;
 		novoAssociado.setCriadoEm(LocalDateTime.now());
 		novoAssociado.setAtualizadoEm(LocalDateTime.now());
 		novoAssociado.setEquipeAtual(equipeFound);
@@ -65,7 +65,7 @@ public AssociadoResponseDto toResponse(Associado response) {
     dto.setDataIngresso(response.getDataIngresso());
     dto.setDataVencimento(response.getDataVencimento());
     dto.setTipoOrigemEquipe(response.getTipoOrigemEquipe());
-    dto.setStatusAtivo(response.getStatusAtivo());
+    dto.setStatusAssociado(response.getStatusAssociado());
     dto.setCriadoEm(response.getCriadoEm());
     dto.setAtualizadoEm(response.getAtualizadoEm());
     dto.setNomeEquipe(response.getEquipeAtual().getNomeEquipe()); 

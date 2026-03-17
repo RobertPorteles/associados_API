@@ -3,6 +3,7 @@ package com.br.robertmiler.gerenciamento.domain.dtos.response;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class AssociadoResponseDto {
 
 	private String tipoOrigemEquipe;
 
-	private Boolean statusAtivo;
+	private StatusAssociado statusAssociado;
 
 	private String nomeEquipe;
 

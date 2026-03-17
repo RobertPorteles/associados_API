@@ -22,25 +22,25 @@ public class AssociadoEnderecoResidencial {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long idEndereco;
 
-	@Column
+	@Column(name = "rua")
 	private String rua;
 
-	@Column
+	@Column(name = "numero")
 	private String numero;
 
-	@Column
+	@Column(name = "complemento")
 	private String complemento;
 
-	@Column
+	@Column(name = "bairro")
 	private String bairro;
 
-	@Column
+	@Column(name = "cidade")
 	private String cidade;
 
-	@Column
+	@Column(name = "estado")
 	private String estado;
 
-	@Column
+	@Column(name = "cep")
 	private String cep;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
