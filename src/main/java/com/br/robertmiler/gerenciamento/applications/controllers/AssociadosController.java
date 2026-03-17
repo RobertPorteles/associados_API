@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.service.AssociadoService;
@@ -21,8 +22,8 @@ public class AssociadosController {
 	private AssociadoService associadoService;
 
 	@PostMapping
-	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@RequestBody AssociadoRequestDto request){
-		var response = associadoService.cadastrarAssociado(request);
+	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@RequestBody AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto enderecoResquest){
+		var response = associadoService.cadastrarAssociado(request, enderecoResquest);
 		return ResponseEntity.status(201).body(response);
 	}
 
