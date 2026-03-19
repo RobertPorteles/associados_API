@@ -10,6 +10,7 @@ import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException
 import com.br.robertmiler.gerenciamento.domain.mappers.ClusterMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.ClusterRepository;
 
+
 @Service
 public class ClusterService {
 
