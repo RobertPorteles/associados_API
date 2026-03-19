@@ -4,8 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
+import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +28,10 @@ import lombok.Setter;
 public class Associado {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idAssociado;
 
-	@Column(name = "nome_completo", unique = true)
+	@Column(name = "nome_completo")
 	private String nomeCompleto;
 
 	@Column(name = "cpf", unique = true)
@@ -54,8 +59,9 @@ public class Associado {
     @Column(name = "tipo_origem_equipe")
     private String tipoOrigemEquipe;
 
-    @Column(name = "status_ativo")
-    private Boolean statusAtivo;
+    @Enumerated(EnumType.STRING)         
+    @Column(name = "status_associado")      
+    private StatusAssociado statusAssociado;
 
     @Column(name = "criado_em")
     private LocalDateTime criadoEm;
@@ -80,6 +86,8 @@ public class Associado {
     @ManyToOne
     @JoinColumn(name = "id_equipe_origem")
     private Equipe equipeOrigem;
+
+ 
 }
 
    /*

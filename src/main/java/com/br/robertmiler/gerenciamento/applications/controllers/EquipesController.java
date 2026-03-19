@@ -23,7 +23,7 @@ public class EquipesController {
 	@Autowired
 	private EquipeService equipeService;
 
-	@PostMapping
+	@PostMapping("/cadastrar")
 	public ResponseEntity<EquipeResponseDto> postCadastrarEquipe(@RequestBody EquipeRequestDto request) {
 		var response = equipeService.cadastrarEquipe(request);
 		return ResponseEntity.status(201).body(response);
