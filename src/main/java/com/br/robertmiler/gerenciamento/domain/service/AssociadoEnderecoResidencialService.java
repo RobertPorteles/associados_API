@@ -8,6 +8,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoRes
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
+import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 
@@ -28,12 +29,12 @@ public class AssociadoEnderecoResidencialService {
         var associadoFound = associadoService.buscarAssociadoEntity(request.getIdAssociado());
 
         AssociadoEnderecoResidencial novoEndereco = new AssociadoEnderecoResidencial();
-        novoEndereco.setRua(request.getRua());
+        novoEndereco.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
         novoEndereco.setNumero(request.getNumero());
         novoEndereco.setComplemento(request.getComplemento());
         novoEndereco.setBairro(request.getBairro());
-        novoEndereco.setCidade(request.getCidade());
-        novoEndereco.setEstado(request.getEstado());
+        novoEndereco.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+        novoEndereco.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
         novoEndereco.setCep(request.getCep());
         novoEndereco.setAssociado(associadoFound);
 

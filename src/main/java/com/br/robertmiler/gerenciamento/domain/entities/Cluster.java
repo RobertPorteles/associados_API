@@ -19,7 +19,7 @@ public class Cluster {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idCluster;
 
-    @Column(name = "nome")
+    @Column(name = "nome", unique = true)
     private String nome;
 
 }
