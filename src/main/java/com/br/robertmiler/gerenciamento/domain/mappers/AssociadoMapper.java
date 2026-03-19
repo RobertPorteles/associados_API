@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.request.RegisterRequest;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.service.AtuacaoEspecificaService;
@@ -51,6 +52,7 @@ public class AssociadoMapper {
 		novoAssociado.setCluster(clusterFound);
 		novoAssociado.setAtuacaoEspecifica(atuacaoFound);
 		
+		
 		return novoAssociado;
 	}
 
@@ -72,5 +74,14 @@ public AssociadoResponseDto toResponse(Associado response) {
     dto.setNomeCluster(response.getCluster().getNome());         
     dto.setNomeAtuacaoEspecifica(response.getAtuacaoEspecifica().getNome()); 
     return dto;
+}
+
+//AssociadoMapper existente
+public Associado toEntityFromRegister(RegisterRequest request) {
+    Associado associado = new Associado();
+    associado.setNomeCompleto(request.getNomeCompleto());
+    associado.setCpf(request.getCpf());
+    associado.setEmailPrincipal(request.getEmail());
+    return associado;
 }
 }
