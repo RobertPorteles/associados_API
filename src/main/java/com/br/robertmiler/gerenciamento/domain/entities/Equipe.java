@@ -37,17 +37,22 @@ public class Equipe {
 	
 	@Column(name = "diaReuniao")
 	public String diaReuniao;
+
 	@Column(name = "horarioReuniao")
 	public LocalTime horarioReuniao;
+
 	@Column(name = "modeloReuniao")
 	public String modeloReuniao;
+
 	@Column(name = "linkReuniaoOnline")
 	public String linkReuniaoOnline;
+
 	@Column(name = "statusEquipe")
 	public String statusEquipe;
+
 	@Column(name = "criadoEm")
 	public LocalDateTime criadoEm;
+
 	@Column(name = "atualizadoEm")
 	public LocalDateTime atualizadoEm;
-
 }
