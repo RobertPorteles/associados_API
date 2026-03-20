@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
+import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
+import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 
@@ -35,6 +37,26 @@ public class AssociadoEnderecoResidencialService {
         enderecoResidencialRepository.save(novoEndereco);
 
         return enderecoResidencialMapper.toResponse(novoEndereco);
+    }
+
+    @Transactional
+    public AssociadoEnderecoResidencialResponseDto editarEnderecoResidencial(Long idEndereco,
+            AssociadoEnderecoResidencialRequestDto request) {
+
+        var enderecoFound = enderecoResidencialRepository.findById(idEndereco)
+                .orElseThrow(() -> new NaoEncontradoException("Endereço residencial não encontrado."));
+
+        enderecoFound.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
+        enderecoFound.setNumero(request.getNumero());
+        enderecoFound.setComplemento(request.getComplemento());
+        enderecoFound.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
+        enderecoFound.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+        enderecoFound.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
+        enderecoFound.setCep(request.getCep());
+
+        enderecoResidencialRepository.save(enderecoFound);
+
+        return enderecoResidencialMapper.toResponse(enderecoFound);
     }
 
     @Transactional(readOnly = true)

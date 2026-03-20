@@ -43,6 +43,27 @@ public class EmpresaEnderecoComercialService {
         return enderecoComercialMapper.montarDtoResposta(novoEndereco);
     }
 
+    @Transactional
+    public EmpresaEnderecoComercialResponseDto editarEnderecoComercial(Long idEnderecoComercial,
+            EmpresaEnderecoComercialRequestDto request) {
+
+        var enderecoFound = enderecoComercialRepository.findById(idEnderecoComercial)
+                .orElseThrow(() -> new NaoEncontradoException("Endereço comercial não encontrado."));
+
+        enderecoFound.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
+        enderecoFound.setNumero(request.getNumero());
+        enderecoFound.setComplemento(request.getComplemento());
+        enderecoFound.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
+        enderecoFound.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+        enderecoFound.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
+        enderecoFound.setCep(request.getCep());
+
+        enderecoComercialRepository.save(enderecoFound);
+
+        return enderecoComercialMapper.montarDtoResposta(enderecoFound);
+    }
+
+    @Transactional(readOnly = true)
     public EmpresaEnderecoComercialResponseDto buscarEnderecoComercialPorEmpresa(Long idEmpresa) {
         var enderecoFound = enderecoComercialRepository.findByEmpresa_IdEmpresa(idEmpresa)
                 .orElseThrow(() -> new NaoEncontradoException("Endereço comercial não encontrado para a empresa informada."));
