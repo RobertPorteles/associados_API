@@ -8,10 +8,9 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoRes
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
-
 import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
-import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoMapper;
+import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
@@ -29,9 +28,7 @@ public class AssociadoService {
 	private AssociadoMapper associadoMapper;
 
 	@Autowired
-	private AssociadoEnderecoMapper associadoEnderecoMapper;
-	
-
+	private AssociadoEnderecoResidencialMapper associadoEnderecoResidencialMapper;
 
 	@Transactional
 	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto requestEndereco) {
@@ -39,13 +36,12 @@ public class AssociadoService {
 		if (associadoRepository.findByCpf(request.getCpf()).isPresent()) {
 			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
 		}
-		
 
 		var associado = associadoMapper.toEntity(request);
 
 		associadoRepository.save(associado);
 
-		var endereco = associadoEnderecoMapper.toEntity(requestEndereco);
+		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
 		enderecoResidencialRepository.save(endereco);
 		
 		var associadoResponse = associadoMapper.toResponse(associado);

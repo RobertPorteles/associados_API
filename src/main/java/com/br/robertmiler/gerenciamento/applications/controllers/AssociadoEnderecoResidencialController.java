@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.applications.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +30,9 @@ public class AssociadoEnderecoResidencialController {
     }
 
     @GetMapping("/associado/{idAssociado}")
-    public ResponseEntity<AssociadoEnderecoResidencialResponseDto> getEnderecoResidencialPorAssociado(
+    public ResponseEntity<List<AssociadoEnderecoResidencialResponseDto>> getEnderecosResidenciaisPorAssociado(
             @PathVariable Long idAssociado) {
-        var response = enderecoResidencialService.buscarEnderecoResidencialPorAssociado(idAssociado);
+        var response = enderecoResidencialService.buscarEnderecosResidenciaisPorAssociado(idAssociado);
         return ResponseEntity.ok(response);
     }
 
