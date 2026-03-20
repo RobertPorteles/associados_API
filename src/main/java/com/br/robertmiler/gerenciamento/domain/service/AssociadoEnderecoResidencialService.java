@@ -1,48 +1,52 @@
 package com.br.robertmiler.gerenciamento.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
-import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
-import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoMapper;
-
+import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 
 @Service
 public class AssociadoEnderecoResidencialService {
 
-
-
     @Autowired
     private AssociadoEnderecoResidencialRepository enderecoResidencialRepository;
 
     @Autowired
-    private AssociadoEnderecoMapper enderecoResidencialMapper;
+    private AssociadoEnderecoResidencialMapper enderecoResidencialMapper;
+
+    @Autowired
+    private AssociadoService associadoService;
 
     @Transactional
-    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(AssociadoEnderecoResidencialRequestDto request) {
-        //var associadoFound = associadoService.buscarAssociadoEntity(request.getIdAssociado());
+    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
+            AssociadoEnderecoResidencialRequestDto request) {
 
-        AssociadoEnderecoMapper mapper = new AssociadoEnderecoMapper();
-        
+        var associadoFound = associadoService.buscarAssociadoEntity(request.getIdAssociado());
 
-        
+        var novoEndereco = enderecoResidencialMapper.toEntity(request);
+        novoEndereco.setAssociado(associadoFound);
 
-        //aqui eu chutei o balde e fiz em uma linha se quiser separar depois botando em variavel e com tigo
+        enderecoResidencialRepository.save(novoEndereco);
 
-        return mapper.toResponse(enderecoResidencialRepository.save(mapper.toEntity(request)));
-
-
+        return enderecoResidencialMapper.toResponse(novoEndereco);
     }
 
-    public AssociadoEnderecoResidencialResponseDto buscarEnderecoResidencialPorAssociado(Long idAssociado) {
-        var enderecoFound = enderecoResidencialRepository.findByAssociado_IdAssociado(idAssociado)
-                .orElseThrow(() -> new NaoEncontradoException("Endereço residencial não encontrado para o associado informado."));
+    @Transactional(readOnly = true)
+    public List<AssociadoEnderecoResidencialResponseDto> buscarEnderecosResidenciaisPorAssociado(Long idAssociado) {
 
-        return enderecoResidencialMapper.toResponse(enderecoFound);
+        associadoService.buscarAssociadoEntity(idAssociado);
+
+        var enderecosFound = enderecoResidencialRepository.findByAssociado_IdAssociado(idAssociado);
+
+        return enderecosFound.stream()
+                .map(enderecoResidencialMapper::toResponse)
+                .toList();
     }
 
 }
