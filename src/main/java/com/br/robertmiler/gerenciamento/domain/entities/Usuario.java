@@ -3,14 +3,11 @@ package com.br.robertmiler.gerenciamento.domain.entities;
 import java.util.Collection;
 import java.util.List;
 
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.br.robertmiler.gerenciamento.domain.enums.UserRule;
-
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
