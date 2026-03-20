@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Associado {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long idAssociado;
 
 	@Column(name = "nome_completo")
