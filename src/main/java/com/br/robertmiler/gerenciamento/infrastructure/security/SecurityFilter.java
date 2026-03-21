@@ -37,7 +37,13 @@ public class SecurityFilter extends OncePerRequestFilter{
 
                     if (!email.isEmpty()) {
 
+                            /*
+                             * ROLE_ADM tem email na própria entidade Usuario.
+                             * ROLE_ASSOCIADO tem email null em Usuario -- o email está em Associado.emailPrincipal.
+                             * A busca encadeada cobre os dois casos sem precisar saber o role antes de autenticar.
+                             */
                             UserDetails usuario = usuarioRepository.findByEmail(email)
+                                .or(() -> usuarioRepository.findByAssociado_EmailPrincipal(email))
                                 .orElseThrow(() -> new RuntimeException("Usuário do token não encontrado"));
 
                                     UsernamePasswordAuthenticationToken auth =
