@@ -64,9 +64,15 @@ public class Usuario implements UserDetails {
     public String getPassword() {
         return senha;
     }
-    //UserName será o email de usuario!
+    /*
+     * getUsername() é o identificador usado pelo Spring Security para autenticar e gerar o subject do JWT.
+     * Para ROLE_ADM, o email está diretamente na entidade Usuario.
+     * Para ROLE_ASSOCIADO, o campo email é null -- o email real está em Associado.emailPrincipal.
+     * Sem essa distinção, o subject do token seria null para associados, quebrando login e validação.
+     */
     @Override
     public String getUsername() {
+        if (associado != null) return associado.getEmailPrincipal();
         return email;
     }
 
