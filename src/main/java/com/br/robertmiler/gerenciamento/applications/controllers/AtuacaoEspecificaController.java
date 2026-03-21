@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class AtuacaoEspecificaController {
 
 	@PostMapping
 	public ResponseEntity<AtuacaoEspecificaResponseDto> postCadastrarAtuacaoEspecifica(
-			@RequestBody AtuacaoEspecificaRequestDto request) {
+			@Valid @RequestBody AtuacaoEspecificaRequestDto request) {
 		var response = atuacaoEspecificaService.cadastrarAtuacaoEspecifica(request);
 		return ResponseEntity.status(201).body(response);
 	}
@@ -39,7 +40,7 @@ public class AtuacaoEspecificaController {
 
 	@PutMapping("/{idAtuacaoEspecifica}")
 	public ResponseEntity<?> putEditarAtuacaoEspecifica(@PathVariable Long idAtuacaoEspecifica,
-			@RequestBody AtuacaoEspecificaRequestDto request) {
+			@Valid @RequestBody AtuacaoEspecificaRequestDto request) {
 		var response = atuacaoEspecificaService.editarAtuacaoEspecifica(idAtuacaoEspecifica, request);
 		return ResponseEntity.ok(response);
 	}

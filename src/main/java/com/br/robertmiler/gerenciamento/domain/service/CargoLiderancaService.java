@@ -57,9 +57,7 @@ public class CargoLiderancaService {
 
         cargo.setNomeCargo(nomeNormalizado);
         cargo.setClassificacaoFinanceira(request.getClassificacaoFinanceira());
-        if (request.getAtivo() != null) {
-            cargo.setAtivo(request.getAtivo());
-        }
+        cargo.setAtivo(request.getAtivo());
 
         cargoLiderancaRepository.save(cargo);
 

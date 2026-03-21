@@ -11,6 +11,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoCargoLidera
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoCargoLiderancaResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoCargoLideranca;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
+import com.br.robertmiler.gerenciamento.domain.exceptions.RegraNegocioException;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoCargoLiderancaMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoCargoLiderancaRepository;
 
@@ -28,6 +29,12 @@ public class AssociadoCargoLiderancaService {
 
     @Transactional
     public AssociadoCargoLiderancaResponseDto designarCargo(AssociadoCargoLiderancaRequestDto request) {
+
+        if (associadoCargoRepository.existsByAssociado_IdAssociadoAndCargoLideranca_IdCargoLiderancaAndAtivoTrue(
+                request.getIdAssociado(), request.getIdCargoLideranca())) {
+            throw new RegraNegocioException("Este associado já possui este cargo ativo.");
+        }
+
         var designacao = associadoCargoMapper.toEntity(request);
         associadoCargoRepository.save(designacao);
         return associadoCargoMapper.toResponse(designacao);
@@ -38,12 +45,19 @@ public class AssociadoCargoLiderancaService {
         var designacao = buscarDesignacaoEntity(idAssociadoCargo);
 
         var novoCargo = cargoLiderancaService.buscarCargoEntity(request.getIdCargoLideranca());
+
+        // Verifica duplicidade apenas se o cargo foi alterado
+        if (!novoCargo.getIdCargoLideranca().equals(designacao.getCargoLideranca().getIdCargoLideranca())) {
+            if (associadoCargoRepository.existsByAssociado_IdAssociadoAndCargoLideranca_IdCargoLiderancaAndAtivoTrue(
+                    designacao.getAssociado().getIdAssociado(), novoCargo.getIdCargoLideranca())) {
+                throw new RegraNegocioException("Este associado já possui este cargo ativo.");
+            }
+        }
+
         designacao.setCargoLideranca(novoCargo);
         designacao.setDataInicio(request.getDataInicio());
         designacao.setDataFim(request.getDataFim());
-        if (request.getAtivo() != null) {
-            designacao.setAtivo(request.getAtivo());
-        }
+        designacao.setAtivo(request.getAtivo());
 
         associadoCargoRepository.save(designacao);
         return associadoCargoMapper.toResponse(designacao);
@@ -76,5 +90,4 @@ public class AssociadoCargoLiderancaService {
                 .map(associadoCargoMapper::toResponse)
                 .collect(Collectors.toList());
     }
-
 }

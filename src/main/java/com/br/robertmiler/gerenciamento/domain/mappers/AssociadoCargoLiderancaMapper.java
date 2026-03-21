@@ -27,7 +27,7 @@ public class AssociadoCargoLiderancaMapper {
         designacao.setCargoLideranca(cargo);
         designacao.setDataInicio(request.getDataInicio());
         designacao.setDataFim(request.getDataFim());
-        designacao.setAtivo(request.getAtivo() != null ? request.getAtivo() : true);
+        designacao.setAtivo(request.getAtivo());
         return designacao;
     }
 

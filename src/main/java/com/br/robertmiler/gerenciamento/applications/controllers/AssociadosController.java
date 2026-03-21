@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,13 +26,13 @@ public class AssociadosController {
 	private AssociadoService associadoService;
 
 	@PostMapping
-	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@RequestBody AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto enderecoResquest){
+	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@Valid @RequestBody AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto enderecoResquest){
 		var response = associadoService.cadastrarAssociado(request, enderecoResquest);
 		return ResponseEntity.status(201).body(response);
 	}
 
 	@PutMapping("/{idAssociado}")
-	public ResponseEntity<AssociadoResponseDto> putEditarAssociado(@PathVariable Long idAssociado, @RequestBody AssociadoRequestDto request) {
+	public ResponseEntity<AssociadoResponseDto> putEditarAssociado(@PathVariable Long idAssociado, @Valid @RequestBody AssociadoRequestDto request) {
 		var response = associadoService.editarAssociado(idAssociado, request);
 		return ResponseEntity.ok(response);
 	}

@@ -1,5 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -33,10 +34,10 @@ public class AssociadoGrupamento {
     private GrupamentoEstrategico grupamento;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Column(name = "ativo")
     private Boolean ativo;

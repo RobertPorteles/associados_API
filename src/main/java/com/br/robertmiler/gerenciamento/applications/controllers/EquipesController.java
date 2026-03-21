@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class EquipesController {
 	private EquipeService equipeService;
 
 	@PostMapping("/cadastrar")
-	public ResponseEntity<EquipeResponseDto> postCadastrarEquipe(@RequestBody EquipeRequestDto request) {
+	public ResponseEntity<EquipeResponseDto> postCadastrarEquipe(@Valid @RequestBody EquipeRequestDto request) {
 		var response = equipeService.cadastrarEquipe(request);
 		return ResponseEntity.status(201).body(response);
 	}

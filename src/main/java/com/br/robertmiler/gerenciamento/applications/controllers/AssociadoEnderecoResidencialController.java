@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
@@ -25,14 +26,14 @@ public class AssociadoEnderecoResidencialController {
 
     @PostMapping
     public ResponseEntity<AssociadoEnderecoResidencialResponseDto> postCadastrarEnderecoResidencial(
-            @RequestBody AssociadoEnderecoResidencialRequestDto request) {
+            @Valid @RequestBody AssociadoEnderecoResidencialRequestDto request) {
         var response = enderecoResidencialService.cadastrarEnderecoResidencial(request);
         return ResponseEntity.status(201).body(response);
     }
 
     @PutMapping("/{idEndereco}")
     public ResponseEntity<?> putEditarEnderecoResidencial(@PathVariable Long idEndereco,
-            @RequestBody AssociadoEnderecoResidencialRequestDto request) {
+            @Valid @RequestBody AssociadoEnderecoResidencialRequestDto request) {
         var response = enderecoResidencialService.editarEnderecoResidencial(idEndereco, request);
         return ResponseEntity.ok(response);
     }

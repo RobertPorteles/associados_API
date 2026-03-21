@@ -1,12 +1,14 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class EquipeRequestDto {
-	
+
+	@NotBlank(message = "O nome da equipe é obrigatório.")
 	public String nomeEquipe;
 
 	/*

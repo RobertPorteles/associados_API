@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class EmpresaController {
 	private EmpresaService empresaService;
 
 	@PostMapping
-	public ResponseEntity<EmpresaResponseDto> postCadastrarEmpresa(@RequestBody EmpresaRequestDto request) {
+	public ResponseEntity<EmpresaResponseDto> postCadastrarEmpresa(@Valid @RequestBody EmpresaRequestDto request) {
 		var response = empresaService.criar(request);
 		return ResponseEntity.status(201).body(response);
 	}

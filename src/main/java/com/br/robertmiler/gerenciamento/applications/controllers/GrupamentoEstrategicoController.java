@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class GrupamentoEstrategicoController {
     private GrupamentoEstrategicoService grupamentoService;
 
     @PostMapping
-    public ResponseEntity<GrupamentoEstrategicoResponseDto> postCadastrarGrupamento(@RequestBody GrupamentoEstrategicoRequestDto request) {
+    public ResponseEntity<GrupamentoEstrategicoResponseDto> postCadastrarGrupamento(@Valid @RequestBody GrupamentoEstrategicoRequestDto request) {
         var response = grupamentoService.cadastrarGrupamento(request);
         return ResponseEntity.status(201).body(response);
     }

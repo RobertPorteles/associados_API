@@ -27,7 +27,7 @@ public class AssociadoGrupamentoMapper {
         vinculo.setGrupamento(grupamento);
         vinculo.setDataInicio(request.getDataInicio());
         vinculo.setDataFim(request.getDataFim());
-        vinculo.setAtivo(request.getAtivo() != null ? request.getAtivo() : true);
+        vinculo.setAtivo(request.getAtivo());
         return vinculo;
     }
 
