@@ -1,6 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,10 +33,10 @@ public class AssociadoCargoLideranca {
     private CargoLideranca cargoLideranca;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Column(name = "ativo")
     private Boolean ativo;

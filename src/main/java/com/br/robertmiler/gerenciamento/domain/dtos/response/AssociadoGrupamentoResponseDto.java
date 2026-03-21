@@ -1,5 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.response;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Getter;
@@ -13,8 +14,8 @@ public class AssociadoGrupamentoResponseDto {
     private String nomeAssociado;
     private String nomeGrupamento;
     private String sigla;
-    private Date dataInicio;
-    private Date dataFim;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
     private Boolean ativo;
 
 }

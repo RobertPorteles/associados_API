@@ -14,4 +14,6 @@ public interface AssociadoCargoLiderancaRepository extends JpaRepository<Associa
 
     List<AssociadoCargoLideranca> findByCargoLideranca_IdCargoLideranca(Long idCargoLideranca);
 
+    boolean existsByAssociado_IdAssociadoAndCargoLideranca_IdCargoLiderancaAndAtivoTrue(Long idAssociado, Long idCargoLideranca);
+
 }

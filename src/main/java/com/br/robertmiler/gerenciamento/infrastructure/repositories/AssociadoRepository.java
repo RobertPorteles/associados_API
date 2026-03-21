@@ -17,7 +17,5 @@ public interface AssociadoRepository extends JpaRepository<Associado, Long>{
     // verifica duplicidade de e-mail no cadastro
     Optional<Associado> findByEmailPrincipal(String emailPrincipal);
 
-    boolean existsByCpf(String cpf);
-
     Page<Associado> findAll(Pageable pageable);
 }

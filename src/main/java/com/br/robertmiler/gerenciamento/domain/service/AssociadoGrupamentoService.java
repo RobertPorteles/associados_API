@@ -41,9 +41,7 @@ public class AssociadoGrupamentoService {
         vinculo.setGrupamento(novoGrupamento);
         vinculo.setDataInicio(request.getDataInicio());
         vinculo.setDataFim(request.getDataFim());
-        if (request.getAtivo() != null) {
-            vinculo.setAtivo(request.getAtivo());
-        }
+        vinculo.setAtivo(request.getAtivo());
 
         associadoGrupamentoRepository.save(vinculo);
         return associadoGrupamentoMapper.toResponse(vinculo);

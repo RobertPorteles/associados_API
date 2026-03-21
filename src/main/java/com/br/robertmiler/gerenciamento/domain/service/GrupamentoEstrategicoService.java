@@ -37,13 +37,11 @@ public class GrupamentoEstrategicoService {
                     throw new RegraNegocioException("Já existe um grupamento com este nome.");
                 });
 
-        var siglaUpper = request.getSigla() != null ? request.getSigla().toUpperCase().trim() : null;
-        if (siglaUpper != null) {
-            grupamentoRepository.findBySigla(siglaUpper)
-                    .ifPresent(g -> {
-                        throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
-                    });
-        }
+        var siglaUpper = request.getSigla().toUpperCase().trim();
+        grupamentoRepository.findBySigla(siglaUpper)
+                .ifPresent(g -> {
+                    throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
+                });
 
         var grupamento = grupamentoMapper.toEntity(request);
         grupamentoRepository.save(grupamento);
@@ -62,19 +60,15 @@ public class GrupamentoEstrategicoService {
             throw new RegraNegocioException("Já existe um grupamento com este nome.");
         }
 
-        if (request.getSigla() != null) {
-            var siglaUpper = request.getSigla().toUpperCase().trim();
-            var grupComMesmaSigla = grupamentoRepository.findBySigla(siglaUpper);
-            if (grupComMesmaSigla.isPresent() && !grupComMesmaSigla.get().getIdGrupamento().equals(idGrupamento)) {
-                throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
-            }
-            grupamento.setSigla(siglaUpper);
+        var siglaUpper = request.getSigla().toUpperCase().trim();
+        var grupComMesmaSigla = grupamentoRepository.findBySigla(siglaUpper);
+        if (grupComMesmaSigla.isPresent() && !grupComMesmaSigla.get().getIdGrupamento().equals(idGrupamento)) {
+            throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
         }
 
         grupamento.setNomeGrupamento(nomeNormalizado);
-        if (request.getAtivo() != null) {
-            grupamento.setAtivo(request.getAtivo());
-        }
+        grupamento.setSigla(siglaUpper);
+        grupamento.setAtivo(request.getAtivo());
 
         grupamentoRepository.save(grupamento);
 

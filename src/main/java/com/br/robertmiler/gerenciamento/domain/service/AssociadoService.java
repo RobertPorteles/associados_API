@@ -54,11 +54,16 @@ public class AssociadoService {
 			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
 		}
 
+		if (associadoRepository.findByEmailPrincipal(request.getEmailPrincipal()).isPresent()) {
+			throw new JaCadastradoException("Email já cadastrado para outro associado.");
+		}
+
 		var associado = associadoMapper.toEntity(request);
 
 		associadoRepository.save(associado);
 
 		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
+		endereco.setAssociado(associado);
 		enderecoResidencialRepository.save(endereco);
 
 		var associadoResponse = associadoMapper.toResponse(associado);

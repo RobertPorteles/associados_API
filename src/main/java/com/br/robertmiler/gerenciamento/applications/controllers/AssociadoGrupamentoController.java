@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoGrupamentoRequestDto;
@@ -24,7 +25,7 @@ public class AssociadoGrupamentoController {
     private AssociadoGrupamentoService associadoGrupamentoService;
 
     @PostMapping
-    public ResponseEntity<AssociadoGrupamentoResponseDto> postVincularGrupamento(@RequestBody AssociadoGrupamentoRequestDto request) {
+    public ResponseEntity<AssociadoGrupamentoResponseDto> postVincularGrupamento(@Valid @RequestBody AssociadoGrupamentoRequestDto request) {
         var response = associadoGrupamentoService.vincularGrupamento(request);
         return ResponseEntity.status(201).body(response);
     }

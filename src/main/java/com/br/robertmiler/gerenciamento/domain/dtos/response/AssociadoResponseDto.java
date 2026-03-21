@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
+import com.br.robertmiler.gerenciamento.domain.enums.TipoOrigemEquipe;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +31,7 @@ public class AssociadoResponseDto {
 
 	private LocalDate dataVencimento;
 
-	private String tipoOrigemEquipe;
+	private TipoOrigemEquipe tipoOrigemEquipe;
 
 	private StatusAssociado statusAssociado;
 
