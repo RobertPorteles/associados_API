@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,12 @@ public class EmpresaController {
 	@GetMapping("/{idEmpresa}")
 	public ResponseEntity<EmpresaResponseDto> getEmpresaPorId(@PathVariable Long idEmpresa) {
 		var response = empresaService.buscarEmpresaPorId(idEmpresa);
+		return ResponseEntity.ok(response);
+	}
+
+	@PutMapping("/{idEmpresa}")
+	public ResponseEntity<EmpresaResponseDto> putEditarEmpresa(@PathVariable Long idEmpresa, @RequestBody EmpresaRequestDto request) {
+		var response = empresaService.editarEmpresa(idEmpresa, request);
 		return ResponseEntity.ok(response);
 	}
 

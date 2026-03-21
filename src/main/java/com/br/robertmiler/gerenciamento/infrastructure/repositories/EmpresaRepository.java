@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.infrastructure.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +13,7 @@ import com.br.robertmiler.gerenciamento.domain.entities.Empresa;
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     Page<Empresa> findByAssociado_IdAssociado(Long idAssociado, Pageable pageable);
+
+    Optional<Empresa> findByCnpj(String cnpj);
 
 }

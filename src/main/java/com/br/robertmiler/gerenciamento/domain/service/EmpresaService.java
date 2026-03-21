@@ -10,6 +10,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.response.EmpresaResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.Empresa;
+import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.mappers.EmpresaMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
@@ -54,6 +55,26 @@ public class EmpresaService {
 	public Empresa buscarEmpresaEntity(Long idEmpresa) {
 		return empresaRepository.findById(idEmpresa)
 				.orElseThrow(() -> new NaoEncontradoException("Empresa não encontrada."));
+	}
+
+	@Transactional
+	public EmpresaResponseDto editarEmpresa(Long idEmpresa, EmpresaRequestDto requestDto) {
+
+		var empresa = buscarEmpresaEntity(idEmpresa);
+
+		var cnpjExistente = empresaRepository.findByCnpj(requestDto.getCnpj());
+		if (cnpjExistente.isPresent() && !cnpjExistente.get().getIdEmpresa().equals(idEmpresa)) {
+			throw new JaCadastradoException("CNPJ já cadastrado para outra empresa.");
+		}
+
+		empresa.setRazaoSocial(requestDto.getRazaoSocial());
+		empresa.setNomeFantasia(requestDto.getNomeFantasia());
+		empresa.setCargo(requestDto.getCargo());
+		empresa.setCnpj(requestDto.getCnpj());
+
+		empresaRepository.save(empresa);
+
+		return empresaMapper.montarDtoResposta(empresa);
 	}
 
 	@Transactional(readOnly = true)
