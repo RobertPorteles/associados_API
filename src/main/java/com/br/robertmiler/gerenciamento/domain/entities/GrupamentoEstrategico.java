@@ -23,7 +23,7 @@ public class GrupamentoEstrategico {
     private String nomeGrupamento;
 
     // Sigla de até 4 caracteres (ex: CIVL, IMOB, DIGI)
-    @Column(name = "sigla", unique = true, length = 10)
+    @Column(name = "sigla", unique = true, length = 4)
     private String sigla;
 
     @Column(name = "ativo")

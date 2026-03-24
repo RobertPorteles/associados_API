@@ -69,7 +69,6 @@ public class EmpresaService {
 
 		empresa.setRazaoSocial(requestDto.getRazaoSocial());
 		empresa.setNomeFantasia(requestDto.getNomeFantasia());
-		empresa.setCargo(requestDto.getCargo());
 		empresa.setCnpj(requestDto.getCnpj());
 
 		empresaRepository.save(empresa);

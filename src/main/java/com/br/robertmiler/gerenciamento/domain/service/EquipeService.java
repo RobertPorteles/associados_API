@@ -36,13 +36,25 @@ public class EquipeService {
 
 		var equipeFound = buscarEquipeEntity(idEquipe);
 
-		String nome = FormataString.primeiraLetraMaiuscula(request.getNomeEquipe());
+		var nome = FormataString.primeiraLetraMaiuscula(request.getNomeEquipe());
 
-		if (nome.equals(equipeFound.getNomeEquipe()))
-			throw new RegraNegocioException("Este nome de equipe já existe.");
+		equipeRepository.findByNomeEquipe(nome).ifPresent(e -> {
+			if (!e.getIdEquipe().equals(idEquipe)) {
+				throw new RegraNegocioException("Este nome de equipe já existe.");
+			}
+		});
 
 		equipeFound.setNomeEquipe(nome);
+		equipeFound.setDataInicioFormacao(request.getDataInicioFormacao());
+		equipeFound.setDataPrevisaoLancamento(request.getDataInicioFormacao().plusDays(63));
+		equipeFound.setDataEfetivaLancamento(request.getDataEfetivaLancamento());
+		equipeFound.setDiaReuniao(request.getDiaReuniao());
+		equipeFound.setHorarioReuniao(request.getHorarioReuniao());
+		equipeFound.setModeloReuniao(request.getModeloReuniao());
+		equipeFound.setLinkReuniaoOnline(request.getLinkReuniaoOnline());
+		equipeFound.setStatusEquipe(request.getStatusEquipe());
 		equipeFound.setAtualizadoEm(LocalDateTime.now());
+
 		equipeRepository.save(equipeFound);
 
 		return equipeMapper.toResponse(equipeFound);
@@ -56,7 +68,8 @@ public class EquipeService {
 					throw new RegraNegocioException("Este nome de equipe já existe.");
 				});
 
-		Equipe novaEquipe = equipeMapper.toEntity(request);
+		var novaEquipe = equipeMapper.toEntity(request);
+		novaEquipe.setDataPrevisaoLancamento(request.getDataInicioFormacao().plusDays(63));
 		equipeRepository.save(novaEquipe);
 
 		return equipeMapper.toResponse(novaEquipe);

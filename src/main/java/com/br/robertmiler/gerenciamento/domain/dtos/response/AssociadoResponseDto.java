@@ -24,16 +24,22 @@ public class AssociadoResponseDto {
 	private String telefonePrincipal;
 
 	private LocalDate dataNascimento;
-	/*
-	Não faço a minima ideia da diferença entre "dataIngresso & dataVencimento" para "cridaoEm & atualizadoEm (Verificar a regra!)" 
-	*/
+
+	/** Data em que o associado ingressou na rede C+C (dado de negócio, editável pela ADM). */
 	private LocalDate dataIngresso;
 
+	/** Data de vencimento da anuidade (dado de negócio, editável pela ADM). */
 	private LocalDate dataVencimento;
 
 	private TipoOrigemEquipe tipoOrigemEquipe;
 
 	private StatusAssociado statusAssociado;
+
+	/** Preenchido apenas quando statusAssociado = INATIVO_PAUSA_PROGRAMADA. */
+	private LocalDate dataInicioPausa;
+
+	/** Preenchido apenas quando statusAssociado = INATIVO_PAUSA_PROGRAMADA. */
+	private LocalDate dataPrevisaoRetorno;
 
 	private String nomeEquipe;
 
@@ -41,8 +47,10 @@ public class AssociadoResponseDto {
 
 	private String nomeAtuacaoEspecifica;
 
+	/** Timestamp de criação do registro no sistema (técnico, nunca editado). */
 	private LocalDateTime criadoEm;
 
-    private LocalDateTime atualizadoEm;
+	/** Timestamp da última atualização do registro no sistema (técnico). */
+	private LocalDateTime atualizadoEm;
 
 }
