@@ -48,6 +48,9 @@ public class SecurityConfig {
                 
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").hasRole("ADM")
 
+                .requestMatchers(HttpMethod.POST, "/api/v1/associados").hasRole("ADM")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/associados/**").hasRole("ADM")
+
                 
                 .requestMatchers("/api/adm/**").hasRole("ADM")
 
