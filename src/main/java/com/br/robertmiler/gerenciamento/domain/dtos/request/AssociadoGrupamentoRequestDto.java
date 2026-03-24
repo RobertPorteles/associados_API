@@ -1,7 +1,7 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

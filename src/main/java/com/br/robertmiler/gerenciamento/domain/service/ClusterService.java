@@ -51,8 +51,11 @@ public class ClusterService {
 
 		String nome = FormataString.primeiraLetraMaiuscula(request.getNome());
 
-		if (nome.equals(clusterFound.getNome()))
-			throw new RegraNegocioException("Este nome de cluster já existe.");
+		clusterRepository.findByNome(nome)
+            .filter(c -> !c.getIdCluster().equals(idCluster))
+            .ifPresent(c -> {
+                throw new RegraNegocioException("Este nome de cluster já existe.");
+            });
 
 		clusterFound.setNome(nome);
 		clusterRepository.save(clusterFound);
