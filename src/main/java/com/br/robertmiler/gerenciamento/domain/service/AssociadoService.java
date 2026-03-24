@@ -17,10 +17,10 @@ import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
-import com.br.robertmiler.gerenciamento.domain.entities.AssociadoVisibilidade;
+
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
-import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoVisibilidadeRepository;
+
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.EquipeRepository;
 
 @Service

@@ -42,6 +42,7 @@ public class AssociadoEnderecoResidencial {
 
     @Column(name = "cep")
     private String cep;
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "associado_id", nullable = false)
