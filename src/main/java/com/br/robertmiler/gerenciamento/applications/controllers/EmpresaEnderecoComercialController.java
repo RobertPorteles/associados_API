@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.EmpresaEnderecoComercialRequestDto;
@@ -23,14 +24,14 @@ public class EmpresaEnderecoComercialController {
 
     @PostMapping
     public ResponseEntity<EmpresaEnderecoComercialResponseDto> postCadastrarEnderecoComercial(
-            @RequestBody EmpresaEnderecoComercialRequestDto request) {
+            @Valid @RequestBody EmpresaEnderecoComercialRequestDto request) {
         var response = enderecoComercialService.cadastrarEnderecoComercial(request);
         return ResponseEntity.status(201).body(response);
     }
 
     @PutMapping("/{idEnderecoComercial}")
     public ResponseEntity<?> putEditarEnderecoComercial(@PathVariable Long idEnderecoComercial,
-            @RequestBody EmpresaEnderecoComercialRequestDto request) {
+            @Valid @RequestBody EmpresaEnderecoComercialRequestDto request) {
         var response = enderecoComercialService.editarEnderecoComercial(idEnderecoComercial, request);
         return ResponseEntity.ok(response);
     }

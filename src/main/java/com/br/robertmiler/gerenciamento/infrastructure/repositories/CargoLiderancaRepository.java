@@ -7,13 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.br.robertmiler.gerenciamento.domain.entities.Empresa;
+import com.br.robertmiler.gerenciamento.domain.entities.CargoLideranca;
 
 @Repository
-public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
+public interface CargoLiderancaRepository extends JpaRepository<CargoLideranca, Long> {
 
-    Page<Empresa> findByAssociado_IdAssociado(Long idAssociado, Pageable pageable);
+    Optional<CargoLideranca> findByNomeCargo(String nomeCargo);
 
-    Optional<Empresa> findByCnpj(String cnpj);
+    Page<CargoLideranca> findAll(Pageable pageable);
 
 }

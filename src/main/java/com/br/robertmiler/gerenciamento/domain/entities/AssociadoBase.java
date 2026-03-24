@@ -3,9 +3,8 @@ package com.br.robertmiler.gerenciamento.domain.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
+
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
-import com.br.robertmiler.gerenciamento.domain.enums.TipoOrigemEquipe;
 
 
 import jakarta.persistence.Column;
@@ -26,7 +25,7 @@ import lombok.Setter;
 @Table(name = "Associados")
 @Getter
 @Setter
-public class Associado {
+public class AssociadoBase {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -35,7 +34,7 @@ public class Associado {
 	@Column(name = "nome_completo")
 	private String nomeCompleto;
 
-	@Column(name = "cpf", unique = true, length = 11, nullable = false)
+	@Column(name = "cpf", unique = true)
 	private String cpf;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -57,9 +56,8 @@ public class Associado {
     @Column(name = "data_vencimento")
     private LocalDate dataVencimento;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_origem_equipe", nullable = false)
-    private TipoOrigemEquipe tipoOrigemEquipe;
+    @Column(name = "tipo_origem_equipe")
+    private String tipoOrigemEquipe;
 
     @Enumerated(EnumType.STRING)         
     @Column(name = "status_associado")      
@@ -71,8 +69,6 @@ public class Associado {
     @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
 
-    @Column(name = "atribuicao_isentas")
-    private AtribuicoesInsentas atribuicoesInsentas;
     //cluster
 
     @ManyToOne
@@ -90,4 +86,25 @@ public class Associado {
     @ManyToOne
     @JoinColumn(name = "id_equipe_origem")
     private Equipe equipeOrigem;
+
+ 
 }
+
+   /*
+
+- 
+-
+-   id_equipe **BIGINT (FK)**
+-   id_cluster **BIGINT (FK)**
+-   id_atuacao_especifica **BIGINT (FK)**
+-   id_padrinho **BIGINT (FK)**
+
+-   tipo_origem_equipe **VARCHAR(30)**
+
+-   id_equipe_origem **BIGINT (FK)**
+
+-   status_ativo **BOOLEAN**
+-   criado_em **TIMESTAMP**
+-   atualizado_em **TIMESTAMP**
+}
+ */

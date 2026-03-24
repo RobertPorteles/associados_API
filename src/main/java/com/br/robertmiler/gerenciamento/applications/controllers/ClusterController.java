@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ public class ClusterController {
 	private ClusterService clusterService;
 
 	@PostMapping
-	public ResponseEntity<ClusterResponseDto> postCadastrarCluster(@RequestBody ClusterRequestDto request) {
+	public ResponseEntity<ClusterResponseDto> postCadastrarCluster(@Valid @RequestBody ClusterRequestDto request) {
 		var response = clusterService.cadastrarCluster(request);
 		return ResponseEntity.status(201).body(response);
 	}
