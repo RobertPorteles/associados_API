@@ -30,6 +30,8 @@ public class CargoLideranca {
     @Column(name = "classificacao_financeira")
     private ClassificacaoFinanceira classificacaoFinanceira;
 
+    
+
     @Column(name = "ativo")
     private Boolean ativo;
 

@@ -2,25 +2,41 @@ package com.br.robertmiler.gerenciamento.domain.mappers;
 
 import org.springframework.stereotype.Component;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
+
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
+
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 
 @Component
 public class AssociadoEnderecoResidencialMapper {
+     
+    
+    public AssociadoEnderecoResidencial toEntity(AssociadoRequestDto request) {
+         AssociadoEnderecoResidencial endereco = new AssociadoEnderecoResidencial();
 
-    public AssociadoEnderecoResidencial toEntity(AssociadoEnderecoResidencialRequestDto request) {
-        AssociadoEnderecoResidencial novoEndereco = new AssociadoEnderecoResidencial();
-        novoEndereco.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
-        novoEndereco.setNumero(request.getNumero());
-        novoEndereco.setComplemento(request.getComplemento());
-        novoEndereco.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
-        novoEndereco.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
-        novoEndereco.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
-        novoEndereco.setCep(request.getCep());
+          if (request.getRua() != null)
+         endereco.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
+         if (request.getNumero() != null)
+        endereco.setNumero(request.getNumero());
+          if (request.getComplemento() != null)
+        endereco.setComplemento(request.getComplemento());
+          if (request.getBairro() != null)
+        endereco.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
+          if (request.getCidade() != null)
+        endereco.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+         if (request.getEstado() != null)
+        endereco.setEstado(request.getEstado().toUpperCase());
+         if (request.getCep() != null)
+        endereco.setCep(request.getCep());
 
-        return novoEndereco;
+         
+
+
+    return endereco;
+
+        
     }
 
     public AssociadoEnderecoResidencialResponseDto toResponse(AssociadoEnderecoResidencial endereco) {

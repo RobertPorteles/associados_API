@@ -19,6 +19,7 @@ import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.EquipeRepository;
 
 @Service
 public class AssociadoService {
@@ -45,32 +46,46 @@ public class AssociadoService {
 	private AtuacaoEspecificaService atuacaoEspecificaService;
 
 	@Autowired
+	private EquipeRepository equipeRepository;
+
+	@Autowired
 	private PaginacaoMapper paginacaoMapper;
 
 	@Transactional
-	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto requestEndereco) {
+    public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request) {
 
-		if (associadoRepository.findByCpf(request.getCpf()).isPresent()) {
-			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
-		}
+        if (associadoRepository.findByCpf(request.getCpf()).isPresent()) {
+            throw new JaCadastradoException("CPF já cadastrado para outro associado.");
+        }
 
-		if (associadoRepository.findByEmailPrincipal(request.getEmailPrincipal()).isPresent()) {
-			throw new JaCadastradoException("Email já cadastrado para outro associado.");
-		}
+        if (associadoRepository.findByEmailPrincipal(request.getEmailPrincipal()).isPresent()) {
+            throw new JaCadastradoException("Email já cadastrado para outro associado.");
+        }
 
-		var associado = associadoMapper.toEntity(request);
+        // 1. Mapeia e salva o Associado PRIMEIRO (para o banco gerar o ID dele)
+        var associado = associadoMapper.toEntity(request);
+        
+        // (Nota: Se EquipeAtual for obrigatório no banco, você precisa buscar a equipe 
+        // e setar no associado aqui antes de salvar, igual fez no editarAssociado)
+        
+		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
 
-		associadoRepository.save(associado);
+		equipeRepository.save(equipeAtual);
+		
+        associado = associadoRepository.save(associado);
 
-		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
-		endereco.setAssociado(associado);
-		enderecoResidencialRepository.save(endereco);
+        // 2. Mapeia o Endereço usando os dados que vieram no request
+        var endereco = associadoEnderecoResidencialMapper.toEntity(request);
+        
+        // 3. FAZ O LINK: Associa a entidade 'Associado' (agora salva e com ID) ao 'Endereço'
+        endereco.setAssociado(associado);
+        
+        // 4. Salva o endereço no banco! (Se não fizer isso, ele é descartado da memória)
+        enderecoResidencialRepository.save(endereco);
 
-		var associadoResponse = associadoMapper.toResponse(associado);
-
-		return associadoResponse;
-
-	}
+        // 5. Retorna o DTO
+        return associadoMapper.toResponse(associado);
+    }
 
 	@Transactional
 	public AssociadoResponseDto editarAssociado(Long idAssociado, AssociadoRequestDto request) {
