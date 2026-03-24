@@ -3,8 +3,9 @@ services:
     image: postgres:16
     restart: always
     environment:
-      POSTGRES_PASSWORD: minhasenha
-      POSTGRES_DB: meu_banco
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bh@scara
+      POSTGRES_DB: db_admcc
     ports:
       - "5432:5432"
     volumes:

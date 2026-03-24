@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "Associados")
 @Getter
 @Setter
-public class Associado {
+public class AssociadoBackup {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

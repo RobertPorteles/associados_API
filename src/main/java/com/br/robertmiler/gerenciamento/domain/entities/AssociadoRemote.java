@@ -3,7 +3,7 @@ package com.br.robertmiler.gerenciamento.domain.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
+
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.enums.TipoOrigemEquipe;
 
@@ -26,7 +26,7 @@ import lombok.Setter;
 @Table(name = "Associados")
 @Getter
 @Setter
-public class Associado {
+public class AssociadoRemote {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -70,10 +70,6 @@ public class Associado {
 
     @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
-
-    @Column(name = "atribuicao_isentas")
-    private AtribuicoesInsentas atribuicoesInsentas;
-    //cluster
 
     @ManyToOne
     @JoinColumn(name = "id_cluster")
