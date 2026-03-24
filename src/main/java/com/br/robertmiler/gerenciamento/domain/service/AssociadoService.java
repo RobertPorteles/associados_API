@@ -12,6 +12,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
+import com.br.robertmiler.gerenciamento.domain.entities.AssociadoCargoLideranca;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoVisibilidade;
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
@@ -20,6 +21,7 @@ import com.br.robertmiler.gerenciamento.domain.exceptions.RegraNegocioException;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoCargoLiderancaRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoVisibilidadeRepository;
@@ -50,6 +52,12 @@ public class AssociadoService {
 
 	@Autowired
 	private AssociadoVisibilidadeRepository associadoVisibilidadeRepository;
+
+	@Autowired
+	private AssociadoCargoLiderancaRepository associadoCargoLiderancaRepository;
+
+	@Autowired
+	private CargoLiderancaService cargoLiderancaService;
 
 	@Autowired
 	private PaginacaoMapper paginacaoMapper;
@@ -93,6 +101,14 @@ public class AssociadoService {
 		visibilidade.setExibirAniversario(request.isExibirAniversario());
 		visibilidade.setExibirEnderecoComercial(false);
 		associadoVisibilidadeRepository.save(visibilidade);
+
+		// Criar cargo inicial obrigatório (PRD §2.1 — todo associado deve ter ao menos 1 cargo)
+		var cargoInicial = new AssociadoCargoLideranca();
+		cargoInicial.setAssociado(associado);
+		cargoInicial.setCargoLideranca(cargoLiderancaService.buscarCargoEntity(request.getIdCargoLideranca()));
+		cargoInicial.setDataInicio(request.getDataInicioCargo());
+		cargoInicial.setAtivo(true);
+		associadoCargoLiderancaRepository.save(cargoInicial);
 
 		// Criar endereço residencial automaticamente
 		var requestEndereco = new AssociadoEnderecoResidencialRequestDto();

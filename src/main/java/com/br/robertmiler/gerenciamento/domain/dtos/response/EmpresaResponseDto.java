@@ -11,7 +11,6 @@ public class EmpresaResponseDto {
 	private String razaoSocial;
 	private String cnpj;
 	private String nomeFantasia;
-	private String cargo;
 	private String nomeAssociado;
 
 }

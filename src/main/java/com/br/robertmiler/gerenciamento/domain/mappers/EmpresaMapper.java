@@ -15,7 +15,6 @@ public class EmpresaMapper {
     public Empresa toEntity(EmpresaRequestDto requestDto, Associado associado) {
         Empresa novaEmpresa = new Empresa();
 
-        novaEmpresa.setCargo(requestDto.getCargo());
         novaEmpresa.setCnpj(requestDto.getCnpj());
         novaEmpresa.setRazaoSocial(requestDto.getRazaoSocial());
         novaEmpresa.setNomeFantasia(requestDto.getNomeFantasia());
@@ -28,7 +27,6 @@ public class EmpresaMapper {
         EmpresaResponseDto responseDto = new EmpresaResponseDto();
 
         responseDto.setIdEmpresa(empresa.getIdEmpresa());
-        responseDto.setCargo(empresa.getCargo());
         responseDto.setCnpj(empresa.getCnpj());
         responseDto.setRazaoSocial(empresa.getRazaoSocial());
         responseDto.setNomeFantasia(empresa.getNomeFantasia());

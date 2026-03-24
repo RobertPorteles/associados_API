@@ -20,6 +20,4 @@ public class EmpresaRequestDto {
 
 	private String nomeFantasia;
 
-	private String cargo;
-
 }

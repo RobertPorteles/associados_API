@@ -31,9 +31,6 @@ public class Empresa {
 	@Column(name = "nomeFantasia")
 	private String nomeFantasia;
 
-	@Column(name = "cargo")
-	private String cargo;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "associado_id", nullable = false)
 	private Associado associado;

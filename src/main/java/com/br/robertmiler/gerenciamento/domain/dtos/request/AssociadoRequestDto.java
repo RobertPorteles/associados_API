@@ -91,6 +91,21 @@ public class AssociadoRequestDto {
     @Positive(message = "O ID da equipe de origem deve ser um número positivo.")
     private Long idEquipeOrigem;
 
+    /**
+     * Cargo de liderança inicial. Obrigatório no cadastro — todo associado
+     * deve ter ao menos 1 cargo (PRD §2.1 Cargo de Liderança).
+     */
+    @NotNull(message = "O cargo de liderança inicial é obrigatório.")
+    @Positive(message = "O ID do cargo de liderança deve ser um número positivo.")
+    private Long idCargoLideranca;
+
+    /**
+     * Data de início do cargo inicial. Obrigatória no cadastro.
+     */
+    @NotNull(message = "A data de início do cargo é obrigatória.")
+    @PastOrPresent(message = "A data de início do cargo não pode ser uma data futura.")
+    private LocalDate dataInicioCargo;
+
     // ── Visibilidade ─────────────────────────────────────────────────────────────
 
     private boolean exibirAniversario;
