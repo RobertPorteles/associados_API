@@ -82,6 +82,10 @@ public class AssociadoRequestDto {
     @Positive(message = "O ID da equipe de origem deve ser um número positivo.")
     private Long idEquipeOrigem;
 
+    // ── Visibilidade ─────────────────────────────────────────────────────────────
+
+    private boolean exibirAniversario;
+
     // ── Endereço residencial ─────────────────────────────────────────────────────
 
     @NotBlank(message = "A rua é obrigatória.")
