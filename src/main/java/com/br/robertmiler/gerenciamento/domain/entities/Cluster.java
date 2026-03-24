@@ -26,6 +26,7 @@ public class Cluster {
 
       @Column(nullable = false, unique = true)
     private String nome;
+    
     @OneToMany(mappedBy = "cluster", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AtuacaoEspecifica> atuacoes = new ArrayList<>();
 
