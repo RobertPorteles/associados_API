@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.EmpresaRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.EmpresaResponseDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.service.EmpresaService;
 
 @RestController
@@ -29,6 +31,15 @@ public class EmpresaController {
 	@GetMapping("/{idEmpresa}")
 	public ResponseEntity<EmpresaResponseDto> getEmpresaPorId(@PathVariable Long idEmpresa) {
 		var response = empresaService.buscarEmpresaPorId(idEmpresa);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/associado/{idAssociado}")
+	public ResponseEntity<PaginacaoResponseDto<EmpresaResponseDto>> getEmpresasPorAssociado(
+			@PathVariable Long idAssociado,
+			@RequestParam(defaultValue = "0") Integer number,
+			@RequestParam(defaultValue = "10") Integer size) {
+		var response = empresaService.buscarEmpresasPorAssociado(idAssociado, number, size);
 		return ResponseEntity.ok(response);
 	}
 

@@ -7,8 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,7 @@ import lombok.Setter;
 public class AssociadoEnderecoResidencial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ IDENTITY é mais simples
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idEndereco;
 
     @Column(name = "rua")
@@ -44,10 +43,8 @@ public class AssociadoEnderecoResidencial {
     @Column(name = "cep")
     private String cep;
 
-    // ✅ OneToOne — um endereço por Associado
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "associado_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "associado_id", nullable = false)
     private Associado associado;
-}
 
-	
+}

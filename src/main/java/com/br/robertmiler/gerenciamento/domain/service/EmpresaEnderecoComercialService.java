@@ -8,6 +8,7 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.EmpresaEnderecoComer
 import com.br.robertmiler.gerenciamento.domain.dtos.response.EmpresaEnderecoComercialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.EmpresaEnderecoComercial;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
+import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 import com.br.robertmiler.gerenciamento.domain.mappers.EmpresaEnderecoComercialMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.EmpresaEnderecoComercialRepository;
 
@@ -28,12 +29,12 @@ public class EmpresaEnderecoComercialService {
         var empresaFound = empresaService.buscarEmpresaEntity(request.getIdEmpresa());
 
         EmpresaEnderecoComercial novoEndereco = new EmpresaEnderecoComercial();
-        novoEndereco.setRua(request.getRua());
+        novoEndereco.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
         novoEndereco.setNumero(request.getNumero());
         novoEndereco.setComplemento(request.getComplemento());
         novoEndereco.setBairro(request.getBairro());
-        novoEndereco.setCidade(request.getCidade());
-        novoEndereco.setEstado(request.getEstado());
+        novoEndereco.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+        novoEndereco.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
         novoEndereco.setCep(request.getCep());
         novoEndereco.setEmpresa(empresaFound);
 
@@ -42,6 +43,27 @@ public class EmpresaEnderecoComercialService {
         return enderecoComercialMapper.montarDtoResposta(novoEndereco);
     }
 
+    @Transactional
+    public EmpresaEnderecoComercialResponseDto editarEnderecoComercial(Long idEnderecoComercial,
+            EmpresaEnderecoComercialRequestDto request) {
+
+        var enderecoFound = enderecoComercialRepository.findById(idEnderecoComercial)
+                .orElseThrow(() -> new NaoEncontradoException("Endereço comercial não encontrado."));
+
+        enderecoFound.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
+        enderecoFound.setNumero(request.getNumero());
+        enderecoFound.setComplemento(request.getComplemento());
+        enderecoFound.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
+        enderecoFound.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
+        enderecoFound.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
+        enderecoFound.setCep(request.getCep());
+
+        enderecoComercialRepository.save(enderecoFound);
+
+        return enderecoComercialMapper.montarDtoResposta(enderecoFound);
+    }
+
+    @Transactional(readOnly = true)
     public EmpresaEnderecoComercialResponseDto buscarEnderecoComercialPorEmpresa(Long idEmpresa) {
         var enderecoFound = enderecoComercialRepository.findByEmpresa_IdEmpresa(idEmpresa)
                 .orElseThrow(() -> new NaoEncontradoException("Endereço comercial não encontrado para a empresa informada."));
