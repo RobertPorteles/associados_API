@@ -2,8 +2,8 @@ package com.br.robertmiler.gerenciamento.domain.mappers;
 
 import org.springframework.stereotype.Component;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
@@ -13,9 +13,13 @@ import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 public class AssociadoEnderecoResidencialMapper {
      
     
-    public AssociadoEnderecoResidencial toEntity(AssociadoEnderecoResidencialRequestDto request) {
-         AssociadoEnderecoResidencial endereco = new AssociadoEnderecoResidencial();
+    public AssociadoEnderecoResidencial toEntity(AssociadoRequestDto request) {
+        
+        if (request == null) {
+             throw new IllegalArgumentException("Os dados de endereço não foram fornecidos no corpo da requisição.");
+        }
 
+        AssociadoEnderecoResidencial endereco = new AssociadoEnderecoResidencial();
           if (request.getRua() != null)
          endereco.setRua(FormataString.primeiraLetraMaiuscula(request.getRua()));
          if (request.getNumero() != null)

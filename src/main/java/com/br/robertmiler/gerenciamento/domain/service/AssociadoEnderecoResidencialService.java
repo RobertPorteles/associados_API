@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
-
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
@@ -30,7 +30,7 @@ public class AssociadoEnderecoResidencialService {
    
     public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
             Long idAssociado, 
-            AssociadoEnderecoResidencialRequestDto request) { 
+            AssociadoRequestDto request) { 
 
        
 
@@ -61,7 +61,7 @@ public class AssociadoEnderecoResidencialService {
         enderecoFound.setComplemento(request.getComplemento());
         enderecoFound.setBairro(FormataString.primeiraLetraMaiuscula(request.getBairro()));
         enderecoFound.setCidade(FormataString.primeiraLetraMaiuscula(request.getCidade()));
-        enderecoFound.setEstado(FormataString.primeiraLetraMaiuscula(request.getEstado()));
+        enderecoFound.setEstado(request.getEstado().toUpperCase());
         enderecoFound.setCep(request.getCep());
 
         enderecoResidencialRepository.save(enderecoFound);

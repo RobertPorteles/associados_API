@@ -1,7 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +8,7 @@ import lombok.Setter;
 @Setter
 public class AssociadoEnderecoResidencialRequestDto {
 
-    @NotNull(message = "O associado é obrigatório.")
-    private Long idAssociado;
-
-    @NotBlank(message = "A rua é obrigatória.")
+    @NotBlank(message = "O nome da rua é obrigatório.")
     private String rua;
 
     @NotBlank(message = "O número é obrigatório.")
@@ -31,5 +27,4 @@ public class AssociadoEnderecoResidencialRequestDto {
 
     @NotBlank(message = "O CEP é obrigatório.")
     private String cep;
-
 }

@@ -17,8 +17,10 @@ import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
+
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
+
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.EquipeRepository;
 
 @Service
@@ -69,13 +71,13 @@ public class AssociadoService {
         // e setar no associado aqui antes de salvar, igual fez no editarAssociado)
         
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
-
+		
 		equipeRepository.save(equipeAtual);
 		
         associado = associadoRepository.save(associado);
 
         // 2. Mapeia o Endereço usando os dados que vieram no request
-        var endereco = associadoEnderecoResidencialMapper.toEntity(null);
+        var endereco = associadoEnderecoResidencialMapper.toEntity(request);
         
         // 3. FAZ O LINK: Associa a entidade 'Associado' (agora salva e com ID) ao 'Endereço'
         endereco.setAssociado(associado);
@@ -141,6 +143,4 @@ public class AssociadoService {
 		return associadoRepository.findById(idAssociado)
 				.orElseThrow(() -> new NaoEncontradoException("Associado não encontrado."));
 	}
-
-
 }
