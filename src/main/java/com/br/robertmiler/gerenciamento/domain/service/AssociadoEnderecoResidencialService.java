@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
@@ -27,10 +27,12 @@ public class AssociadoEnderecoResidencialService {
     private AssociadoService associadoService;
 
     @Transactional
-    // 1. Adicionamos o Long idAssociado como parâmetro do método
+   
     public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
             Long idAssociado, 
-            AssociadoRequestDto request) { 
+            AssociadoEnderecoResidencialRequestDto request) { 
+
+       
 
         // 2. Usamos a variável idAssociado direto aqui! Fim do erro do request.getId()
         var associadoFound = associadoService.buscarAssociadoEntity(idAssociado);

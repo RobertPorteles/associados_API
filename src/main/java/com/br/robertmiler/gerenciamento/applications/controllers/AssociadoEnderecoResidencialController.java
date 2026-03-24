@@ -24,10 +24,15 @@ public class AssociadoEnderecoResidencialController {
     @Autowired
     private AssociadoEnderecoResidencialService enderecoResidencialService;
 
-    @PostMapping
+  // 1. Adicionamos o caminho na URL para receber o ID do associado
+    @PostMapping("/associado/{idAssociado}")
     public ResponseEntity<AssociadoEnderecoResidencialResponseDto> postCadastrarEnderecoResidencial(
+            @PathVariable Long idAssociado, // 2. Capturamos o ID da URL
             @Valid @RequestBody AssociadoEnderecoResidencialRequestDto request) {
-        var response = enderecoResidencialService.cadastrarEnderecoResidencial(request);
+        
+        // 3. Passamos as duas informações reais para o Service (e colocamos o ponto e vírgula!)
+        var response = enderecoResidencialService.cadastrarEnderecoResidencial(idAssociado, request);
+        
         return ResponseEntity.status(201).body(response);
     }
 

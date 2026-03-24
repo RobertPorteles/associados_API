@@ -2,8 +2,8 @@ package com.br.robertmiler.gerenciamento.domain.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
@@ -13,7 +13,7 @@ import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 public class AssociadoEnderecoResidencialMapper {
      
     
-    public AssociadoEnderecoResidencial toEntity(AssociadoRequestDto request) {
+    public AssociadoEnderecoResidencial toEntity(AssociadoEnderecoResidencialRequestDto request) {
          AssociadoEnderecoResidencial endereco = new AssociadoEnderecoResidencial();
 
           if (request.getRua() != null)

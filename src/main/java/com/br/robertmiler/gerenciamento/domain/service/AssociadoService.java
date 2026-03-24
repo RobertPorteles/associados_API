@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
@@ -75,7 +75,7 @@ public class AssociadoService {
         associado = associadoRepository.save(associado);
 
         // 2. Mapeia o Endereço usando os dados que vieram no request
-        var endereco = associadoEnderecoResidencialMapper.toEntity(request);
+        var endereco = associadoEnderecoResidencialMapper.toEntity(null);
         
         // 3. FAZ O LINK: Associa a entidade 'Associado' (agora salva e com ID) ao 'Endereço'
         endereco.setAssociado(associado);
