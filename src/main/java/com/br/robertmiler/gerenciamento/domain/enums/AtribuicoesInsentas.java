@@ -1,7 +1,5 @@
 package com.br.robertmiler.gerenciamento.domain.enums;
 
-
-
 public enum AtribuicoesInsentas {
 DE_DIRETOR_DE_EQUIPE("D.E- Diretor de Equipe"),
 DT3_DIRETOR_DE_TERRITORIO3("DT3- Diretor de Território 3"),

@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
@@ -25,6 +25,8 @@ import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoCar
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoVisibilidadeRepository;
+
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.EquipeRepository;
 
 @Service
 public class AssociadoService {
@@ -132,6 +134,8 @@ public class AssociadoService {
 
 		var associado = buscarAssociadoEntity(idAssociado);
 
+
+		//Ve se o email existe
 		var emailExistente = associadoRepository.findByEmailPrincipal(request.getEmailPrincipal());
 		if (emailExistente.isPresent() && !emailExistente.get().getIdAssociado().equals(idAssociado)) {
 			throw new JaCadastradoException("E-mail já cadastrado para outro associado.");
@@ -140,9 +144,11 @@ public class AssociadoService {
 		validarCamposPausaProgramada(request);
 
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
+		//area de atuação
 		var cluster = clusterService.buscarClusterEntity(request.getIdCluster());
+		//especialização
 		var atuacaoEspecifica = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
-
+		//cadastro comum
 		associado.setNomeCompleto(request.getNomeCompleto());
 		associado.setEmailPrincipal(request.getEmailPrincipal());
 		associado.setTelefonePrincipal(request.getTelefonePrincipal());
@@ -155,6 +161,8 @@ public class AssociadoService {
 		associado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
 		associado.setEquipeAtual(equipeAtual);
 		associado.setCluster(cluster);
+
+		//No futuro teremos que fazer um calculo doido
 		associado.setAtuacaoEspecifica(atuacaoEspecifica);
 
 		if (request.getIdEquipeOrigem() != null) {
