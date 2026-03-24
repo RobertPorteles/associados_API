@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
@@ -26,8 +26,8 @@ public class AssociadosController {
 	private AssociadoService associadoService;
 
 	@PostMapping
-	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@Valid @RequestBody AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto enderecoResquest){
-		var response = associadoService.cadastrarAssociado(request, enderecoResquest);
+	public ResponseEntity<AssociadoResponseDto> postCadastrarAssociado(@Valid @RequestBody AssociadoRequestDto request){
+		var response = associadoService.cadastrarAssociado(request);
 		return ResponseEntity.status(201).body(response);
 	}
 

@@ -50,6 +50,8 @@ public class AssociadoMapper {
 		novoAssociado.setCluster(clusterFound);
 		novoAssociado.setAtuacaoEspecifica(atuacaoFound);
 
+		
+
 		return novoAssociado;
 	}
 
