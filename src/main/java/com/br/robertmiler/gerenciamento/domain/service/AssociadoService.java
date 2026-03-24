@@ -77,15 +77,19 @@ public class AssociadoService {
 
 		var associado = buscarAssociadoEntity(idAssociado);
 
+
+		//Ve se o email existe
 		var emailExistente = associadoRepository.findByEmailPrincipal(request.getEmailPrincipal());
 		if (emailExistente.isPresent() && !emailExistente.get().getIdAssociado().equals(idAssociado)) {
 			throw new JaCadastradoException("E-mail já cadastrado para outro associado.");
 		}
-
+		//equipe Atual
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
+		//area de atuação
 		var cluster = clusterService.buscarClusterEntity(request.getIdCluster());
+		//especialização
 		var atuacaoEspecifica = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
-
+		//cadastro comum
 		associado.setNomeCompleto(request.getNomeCompleto());
 		associado.setEmailPrincipal(request.getEmailPrincipal());
 		associado.setTelefonePrincipal(request.getTelefonePrincipal());
@@ -96,6 +100,8 @@ public class AssociadoService {
 		associado.setStatusAssociado(request.getStatusAssociado());
 		associado.setEquipeAtual(equipeAtual);
 		associado.setCluster(cluster);
+
+		//No futuro teremos que fazer um calculo doido
 		associado.setAtuacaoEspecifica(atuacaoEspecifica);
 		associado.setAtualizadoEm(LocalDateTime.now());
 
