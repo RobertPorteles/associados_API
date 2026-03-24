@@ -2,7 +2,6 @@ package com.br.robertmiler.gerenciamento.domain.mappers;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
@@ -10,32 +9,16 @@ import com.br.robertmiler.gerenciamento.domain.dtos.request.RegisterRequest;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
-import com.br.robertmiler.gerenciamento.domain.service.AtuacaoEspecificaService;
-import com.br.robertmiler.gerenciamento.domain.service.ClusterService;
-import com.br.robertmiler.gerenciamento.domain.service.EquipeService;
-import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 
 @Component
 public class AssociadoMapper {
 
-	@Autowired
-	private EquipeService equipeService;
-
-	@Autowired
-	private ClusterService clusterService;
-
-	@Autowired
-	private AtuacaoEspecificaService atuacaoEspecificaService;
-
-	@Autowired
-	private AssociadoRepository associadoRepository;
-
+	/**
+	 * Converte o request em entidade, setando apenas campos primitivos/enum.
+	 * Vínculos de FK (equipe, cluster, atuação, padrinho, equipeOrigem)
+	 * devem ser resolvidos e setados pelo AssociadoService.
+	 */
 	public Associado toEntity(AssociadoRequestDto request) {
-
-		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
-		var clusterFound = clusterService.buscarClusterEntity(request.getIdCluster());
-		var atuacaoFound = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
-
 		Associado novoAssociado = new Associado();
 		novoAssociado.setNomeCompleto(FormataString.primeiraLetraMaiuscula(request.getNomeCompleto()));
 		novoAssociado.setCpf(request.getCpf());
@@ -46,24 +29,10 @@ public class AssociadoMapper {
 		novoAssociado.setDataVencimento(request.getDataVencimento());
 		novoAssociado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
 		novoAssociado.setStatusAssociado(request.getStatusAssociado());
-		novoAssociado.setAtribuicoesInsentas(request.getAtribuicoesInsentas());
+		novoAssociado.setDataInicioPausa(request.getDataInicioPausa());
+		novoAssociado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
 		novoAssociado.setCriadoEm(LocalDateTime.now());
 		novoAssociado.setAtualizadoEm(LocalDateTime.now());
-		novoAssociado.setEquipeAtual(equipeAtual);
-		novoAssociado.setCluster(clusterFound);
-		novoAssociado.setAtuacaoEspecifica(atuacaoFound);
-
-		if (request.getIdEquipeOrigem() != null) {
-			var equipeOrigem = equipeService.buscarEquipeEntity(request.getIdEquipeOrigem());
-			novoAssociado.setEquipeOrigem(equipeOrigem);
-		}
-
-		if (request.getIdPadrinho() != null) {
-			var padrinho = associadoRepository.findById(request.getIdPadrinho())
-					.orElse(null);
-			novoAssociado.setPadrinho(padrinho);
-		}
-
 		return novoAssociado;
 	}
 
@@ -79,6 +48,8 @@ public class AssociadoMapper {
 		dto.setDataVencimento(response.getDataVencimento());
 		dto.setTipoOrigemEquipe(response.getTipoOrigemEquipe());
 		dto.setStatusAssociado(response.getStatusAssociado());
+		dto.setDataInicioPausa(response.getDataInicioPausa());
+		dto.setDataPrevisaoRetorno(response.getDataPrevisaoRetorno());
 		dto.setCriadoEm(response.getCriadoEm());
 		dto.setAtualizadoEm(response.getAtualizadoEm());
 		dto.setNomeEquipe(response.getEquipeAtual().getNomeEquipe());
@@ -87,10 +58,10 @@ public class AssociadoMapper {
 		return dto;
 	}
 
-	// AssociadoMapper existente
+	// Usado pelo fluxo de autenticação/registro
 	public Associado toEntityFromRegister(RegisterRequest request) {
 		Associado associado = new Associado();
-		associado.setNomeCompleto(request.getNomeCompleto());
+		associado.setNomeCompleto(FormataString.primeiraLetraMaiuscula(request.getNomeCompleto()));
 		associado.setCpf(request.getCpf());
 		associado.setEmailPrincipal(request.getEmail());
 		return associado;

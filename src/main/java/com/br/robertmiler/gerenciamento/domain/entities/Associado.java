@@ -3,7 +3,6 @@ package com.br.robertmiler.gerenciamento.domain.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.enums.TipoOrigemEquipe;
 
@@ -65,14 +64,24 @@ public class Associado {
     @Column(name = "status_associado")      
     private StatusAssociado statusAssociado;
 
+    /**
+     * Preenchido apenas quando statusAssociado = INATIVO_PAUSA_PROGRAMADA.
+     */
+    @Column(name = "data_inicio_pausa")
+    private LocalDate dataInicioPausa;
+
+    /**
+     * Preenchido apenas quando statusAssociado = INATIVO_PAUSA_PROGRAMADA.
+     */
+    @Column(name = "data_previsao_retorno")
+    private LocalDate dataPrevisaoRetorno;
+
     @Column(name = "criado_em")
     private LocalDateTime criadoEm;
 
     @Column(name = "atualizado_em")
     private LocalDateTime atualizadoEm;
 
-    @Column(name = "atribuicao_isentas")
-    private AtribuicoesInsentas atribuicoesInsentas;
     //cluster
 
     @ManyToOne

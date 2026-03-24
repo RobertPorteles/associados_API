@@ -4,8 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import com.br.robertmiler.gerenciamento.domain.enums.DiaReuniao;
+import com.br.robertmiler.gerenciamento.domain.enums.ModeloReuniao;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,38 +26,44 @@ public class Equipe {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	public Long idEquipe;
+	private Long idEquipe;
 
-	@Column(name = "nomeEquipe", unique = true)
-	public String nomeEquipe;
+	@Column(name = "nome_equipe", unique = true)
+	private String nomeEquipe;
 
-	@Column(name = "dataInicioFormacao")
-	public LocalDate dataInicioFormacao;
+	@Column(name = "data_inicio_formacao")
+	private LocalDate dataInicioFormacao;
 
-	@Column(name = "dataPrevisaoLancamento")
-	public LocalDate dataPrevisaoLancamento;
+	/**
+	 * Calculado automaticamente: dataInicioFormacao + 63 dias.
+	 * Recalculado sempre que dataInicioFormacao for alterado.
+	 */
+	@Column(name = "data_previsao_lancamento")
+	private LocalDate dataPrevisaoLancamento;
 
-	@Column(name = "dataEfetivaLancamento")
-	public LocalDate dataEfetivaLancamento;
-	
-	@Column(name = "diaReuniao")
-	public String diaReuniao;
+	@Column(name = "data_efetiva_lancamento")
+	private LocalDate dataEfetivaLancamento;
 
-	@Column(name = "horarioReuniao")
-	public LocalTime horarioReuniao;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "dia_reuniao")
+	private DiaReuniao diaReuniao;
 
-	@Column(name = "modeloReuniao")
-	public String modeloReuniao;
+	@Column(name = "horario_reuniao")
+	private LocalTime horarioReuniao;
 
-	@Column(name = "linkReuniaoOnline")
-	public String linkReuniaoOnline;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "modelo_reuniao")
+	private ModeloReuniao modeloReuniao;
 
-	@Column(name = "statusEquipe")
-	public String statusEquipe;
+	@Column(name = "link_reuniao_online")
+	private String linkReuniaoOnline;
 
-	@Column(name = "criadoEm")
-	public LocalDateTime criadoEm;
+	@Column(name = "status_equipe")
+	private String statusEquipe;
 
-	@Column(name = "atualizadoEm")
-	public LocalDateTime atualizadoEm;
+	@Column(name = "criado_em")
+	private LocalDateTime criadoEm;
+
+	@Column(name = "atualizado_em")
+	private LocalDateTime atualizadoEm;
 }

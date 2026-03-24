@@ -2,7 +2,6 @@ package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
 import java.time.LocalDate;
 
-import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.enums.TipoOrigemEquipe;
 
@@ -60,7 +59,17 @@ public class AssociadoRequestDto {
     @NotNull(message = "O status do associado é obrigatório.")
     private StatusAssociado statusAssociado;
 
-    private AtribuicoesInsentas atribuicoesInsentas;
+    /**
+     * Obrigatório quando statusAssociado = INATIVO_PAUSA_PROGRAMADA.
+     * Validado em nível de service.
+     */
+    private LocalDate dataInicioPausa;
+
+    /**
+     * Obrigatório quando statusAssociado = INATIVO_PAUSA_PROGRAMADA.
+     * Validado em nível de service.
+     */
+    private LocalDate dataPrevisaoRetorno;
 
     // ── Vínculos (FKs) ───────────────────────────────────────────────────────────
 

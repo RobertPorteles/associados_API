@@ -14,7 +14,7 @@ public class GrupamentoEstrategicoRequestDto {
     private String nomeGrupamento;
 
     @NotBlank(message = "A sigla é obrigatória.")
-    @Size(max = 10, message = "A sigla deve ter no máximo 10 caracteres.")
+    @Size(min = 2, max = 4, message = "A sigla deve ter entre 2 e 4 caracteres.")
     private String sigla;
 
     @NotNull(message = "O status ativo é obrigatório.")

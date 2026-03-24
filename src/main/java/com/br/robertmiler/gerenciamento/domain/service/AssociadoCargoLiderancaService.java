@@ -25,6 +25,9 @@ public class AssociadoCargoLiderancaService {
     private AssociadoCargoLiderancaMapper associadoCargoMapper;
 
     @Autowired
+    private AssociadoService associadoService;
+
+    @Autowired
     private CargoLiderancaService cargoLiderancaService;
 
     @Transactional
@@ -35,7 +38,14 @@ public class AssociadoCargoLiderancaService {
             throw new RegraNegocioException("Este associado já possui este cargo ativo.");
         }
 
+        // Resolver FKs no service, não no mapper
+        var associado = associadoService.buscarAssociadoEntity(request.getIdAssociado());
+        var cargo = cargoLiderancaService.buscarCargoEntity(request.getIdCargoLideranca());
+
         var designacao = associadoCargoMapper.toEntity(request);
+        designacao.setAssociado(associado);
+        designacao.setCargoLideranca(cargo);
+
         associadoCargoRepository.save(designacao);
         return associadoCargoMapper.toResponse(designacao);
     }
