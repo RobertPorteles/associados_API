@@ -13,9 +13,11 @@ import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
 import com.br.robertmiler.gerenciamento.domain.service.AtuacaoEspecificaService;
 import com.br.robertmiler.gerenciamento.domain.service.ClusterService;
 import com.br.robertmiler.gerenciamento.domain.service.EquipeService;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 
 @Component
 public class AssociadoMapper {
+
 	@Autowired
 	private EquipeService equipeService;
 
@@ -25,14 +27,16 @@ public class AssociadoMapper {
 	@Autowired
 	private AtuacaoEspecificaService atuacaoEspecificaService;
 
+	@Autowired
+	private AssociadoRepository associadoRepository;
+
 	public Associado toEntity(AssociadoRequestDto request) {
 
-		var equipeFound = equipeService.buscarEquipeEntity(request.getIdEquipe());
+		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
 		var clusterFound = clusterService.buscarClusterEntity(request.getIdCluster());
 		var atuacaoFound = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
 
 		Associado novoAssociado = new Associado();
-		novoAssociado.getIdAssociado();
 		novoAssociado.setNomeCompleto(FormataString.primeiraLetraMaiuscula(request.getNomeCompleto()));
 		novoAssociado.setCpf(request.getCpf());
 		novoAssociado.setEmailPrincipal(request.getEmailPrincipal());
@@ -42,13 +46,23 @@ public class AssociadoMapper {
 		novoAssociado.setDataVencimento(request.getDataVencimento());
 		novoAssociado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
 		novoAssociado.setStatusAssociado(request.getStatusAssociado());
-		;
+		novoAssociado.setAtribuicoesInsentas(request.getAtribuicoesInsentas());
 		novoAssociado.setCriadoEm(LocalDateTime.now());
 		novoAssociado.setAtualizadoEm(LocalDateTime.now());
-		novoAssociado.setEquipeAtual(equipeFound);
-		novoAssociado.setEquipeOrigem(equipeFound);
+		novoAssociado.setEquipeAtual(equipeAtual);
 		novoAssociado.setCluster(clusterFound);
 		novoAssociado.setAtuacaoEspecifica(atuacaoFound);
+
+		if (request.getIdEquipeOrigem() != null) {
+			var equipeOrigem = equipeService.buscarEquipeEntity(request.getIdEquipeOrigem());
+			novoAssociado.setEquipeOrigem(equipeOrigem);
+		}
+
+		if (request.getIdPadrinho() != null) {
+			var padrinho = associadoRepository.findById(request.getIdPadrinho())
+					.orElse(null);
+			novoAssociado.setPadrinho(padrinho);
+		}
 
 		return novoAssociado;
 	}

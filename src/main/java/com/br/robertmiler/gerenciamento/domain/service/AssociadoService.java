@@ -48,7 +48,7 @@ public class AssociadoService {
 	private PaginacaoMapper paginacaoMapper;
 
 	@Transactional
-	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request, AssociadoEnderecoResidencialRequestDto requestEndereco) {
+	public AssociadoResponseDto cadastrarAssociado(AssociadoRequestDto request) {
 
 		if (associadoRepository.findByCpf(request.getCpf()).isPresent()) {
 			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
@@ -59,17 +59,22 @@ public class AssociadoService {
 		}
 
 		var associado = associadoMapper.toEntity(request);
-
 		associadoRepository.save(associado);
+
+		var requestEndereco = new AssociadoEnderecoResidencialRequestDto();
+		requestEndereco.setRua(request.getRua());
+		requestEndereco.setNumero(request.getNumero());
+		requestEndereco.setComplemento(request.getComplemento());
+		requestEndereco.setBairro(request.getBairro());
+		requestEndereco.setCidade(request.getCidade());
+		requestEndereco.setEstado(request.getEstado());
+		requestEndereco.setCep(request.getCep());
 
 		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
 		endereco.setAssociado(associado);
 		enderecoResidencialRepository.save(endereco);
 
-		var associadoResponse = associadoMapper.toResponse(associado);
-
-		return associadoResponse;
-
+		return associadoMapper.toResponse(associado);
 	}
 
 	@Transactional
@@ -94,9 +99,23 @@ public class AssociadoService {
 		associado.setDataVencimento(request.getDataVencimento());
 		associado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
 		associado.setStatusAssociado(request.getStatusAssociado());
+		associado.setAtribuicoesInsentas(request.getAtribuicoesInsentas());
 		associado.setEquipeAtual(equipeAtual);
 		associado.setCluster(cluster);
 		associado.setAtuacaoEspecifica(atuacaoEspecifica);
+
+		if (request.getIdEquipeOrigem() != null) {
+			associado.setEquipeOrigem(equipeService.buscarEquipeEntity(request.getIdEquipeOrigem()));
+		} else {
+			associado.setEquipeOrigem(null);
+		}
+
+		if (request.getIdPadrinho() != null) {
+			associado.setPadrinho(buscarAssociadoEntity(request.getIdPadrinho()));
+		} else {
+			associado.setPadrinho(null);
+		}
+
 		associado.setAtualizadoEm(LocalDateTime.now());
 
 		associadoRepository.save(associado);
