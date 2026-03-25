@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
@@ -27,22 +26,20 @@ public class AssociadoEnderecoResidencialService {
     private AssociadoService associadoService;
 
     @Transactional
-   
-    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
-            Long idAssociado, 
-            AssociadoRequestDto request) { 
 
-       
+    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
+            Long idAssociado,
+            AssociadoEnderecoResidencialRequestDto request) {
 
         // 2. Usamos a variável idAssociado direto aqui! Fim do erro do request.getId()
         var associadoFound = associadoService.buscarAssociadoEntity(idAssociado);
 
         // 3. Converte o DTO para Entidade de Endereço
         var novoEndereco = enderecoResidencialMapper.toEntity(request);
-        
+
         // 4. Faz o Link da entidade inteira
         novoEndereco.setAssociado(associadoFound);
-                
+
         // 5. Salva e retorna
         enderecoResidencialRepository.save(novoEndereco);
 
