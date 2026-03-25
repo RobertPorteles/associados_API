@@ -1,14 +1,13 @@
 package com.br.robertmiler.gerenciamento.domain.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AlterarStatusAssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
@@ -96,7 +95,8 @@ public class AssociadoService {
 		// Resolver FKs
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
 		var cluster = clusterService.buscarClusterEntity(request.getIdCluster());
-		var atuacaoEspecifica = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
+		var atuacaoEspecifica = atuacaoEspecificaService
+				.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
 
 		var associado = associadoMapper.toEntity(request);
 		associado.setEquipeAtual(equipeAtual);
@@ -120,7 +120,8 @@ public class AssociadoService {
 		visibilidade.setExibirEnderecoComercial(false);
 		associadoVisibilidadeRepository.save(visibilidade);
 
-		// Criar cargo inicial obrigatório (PRD §2.1 — todo associado deve ter ao menos 1 cargo)
+		// Criar cargo inicial obrigatório (PRD §2.1 — todo associado deve ter ao menos
+		// 1 cargo)
 		var cargoInicial = new AssociadoCargoLideranca();
 		cargoInicial.setAssociado(associado);
 		cargoInicial.setCargoLideranca(cargoLiderancaService.buscarCargoEntity(request.getIdCargoLideranca()));
@@ -150,6 +151,7 @@ public class AssociadoService {
 
 		var associado = buscarAssociadoEntity(idAssociado);
 
+		// Ve se o email existe
 		var emailExistente = associadoRepository.findByEmailPrincipal(request.getEmailPrincipal());
 		if (emailExistente.isPresent() && !emailExistente.get().getIdAssociado().equals(idAssociado)) {
 			throw new JaCadastradoException("E-mail já cadastrado para outro associado.");
@@ -158,9 +160,12 @@ public class AssociadoService {
 		validarCamposPausaProgramada(request);
 
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
+		// area de atuação
 		var cluster = clusterService.buscarClusterEntity(request.getIdCluster());
-		var atuacaoEspecifica = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
-
+		// especialização
+		var atuacaoEspecifica = atuacaoEspecificaService
+				.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
+		// cadastro comum
 		associado.setNomeCompleto(request.getNomeCompleto());
 		associado.setEmailPrincipal(request.getEmailPrincipal());
 		associado.setTelefonePrincipal(request.getTelefonePrincipal());
@@ -173,6 +178,8 @@ public class AssociadoService {
 		associado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
 		associado.setEquipeAtual(equipeAtual);
 		associado.setCluster(cluster);
+
+		// No futuro teremos que fazer um calculo doido
 		associado.setAtuacaoEspecifica(atuacaoEspecifica);
 
 		if (request.getIdEquipeOrigem() != null) {
