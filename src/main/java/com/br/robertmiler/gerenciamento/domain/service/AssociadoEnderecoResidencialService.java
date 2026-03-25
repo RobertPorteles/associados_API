@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoEnderecoResidencialResponseDto;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.helpers.FormataString;
@@ -28,9 +28,9 @@ public class AssociadoEnderecoResidencialService {
 
     @Transactional
    
-    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
+        public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
             Long idAssociado, 
-            AssociadoRequestDto request) { 
+            AssociadoEnderecoResidencialRequestDto request) { 
 
        
 
