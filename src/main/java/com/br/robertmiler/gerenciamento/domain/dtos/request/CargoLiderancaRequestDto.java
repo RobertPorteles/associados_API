@@ -1,5 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.dtos.request;
 
+import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
 import com.br.robertmiler.gerenciamento.domain.enums.ClassificacaoFinanceira;
 
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,8 @@ public class CargoLiderancaRequestDto {
 
     @NotNull(message = "A classificação financeira é obrigatória.")
     private ClassificacaoFinanceira classificacaoFinanceira;
+
+    private AtribuicoesInsentas atribuicaoIsenta;
 
     @NotNull(message = "O status ativo é obrigatório.")
     private Boolean ativo;
