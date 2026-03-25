@@ -139,7 +139,7 @@ public class AssociadoService {
 		requestEndereco.setEstado(request.getEstado());
 		requestEndereco.setCep(request.getCep());
 
-		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
+				AssociadoEnderecoResidencial endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
 		endereco.setAssociado(associado);
 		enderecoResidencialRepository.save(endereco);
 
