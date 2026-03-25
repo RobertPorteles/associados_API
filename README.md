@@ -46,4 +46,5 @@ A documentação da API está disponível via Swagger UI. Após iniciar a aplica
 -   `/api/v1/auth`: Autenticação e registro de usuários.
 
 ---
-*Este README foi gerado pela IA.*
+![alt text](image.png)
+![alt text](image-1.png)
