@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoCargoLideranca;
+import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoVisibilidade;
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
@@ -26,7 +28,7 @@ import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnd
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoVisibilidadeRepository;
 
-import com.br.robertmiler.gerenciamento.infrastructure.repositories.EquipeRepository;
+
 
 @Service
 public class AssociadoService {
@@ -122,7 +124,7 @@ public class AssociadoService {
 		requestEndereco.setEstado(request.getEstado());
 		requestEndereco.setCep(request.getCep());
 
-		var endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
+				AssociadoEnderecoResidencial endereco = associadoEnderecoResidencialMapper.toEntity(requestEndereco);
 		endereco.setAssociado(associado);
 		enderecoResidencialRepository.save(endereco);
 
