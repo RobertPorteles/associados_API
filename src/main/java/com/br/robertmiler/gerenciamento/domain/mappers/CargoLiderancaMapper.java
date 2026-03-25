@@ -14,6 +14,7 @@ public class CargoLiderancaMapper {
         CargoLideranca cargo = new CargoLideranca();
         cargo.setNomeCargo(FormataString.primeiraLetraMaiuscula(request.getNomeCargo()));
         cargo.setClassificacaoFinanceira(request.getClassificacaoFinanceira());
+        cargo.setAtribuicaoIsenta(request.getAtribuicaoIsenta());
         cargo.setAtivo(request.getAtivo() != null ? request.getAtivo() : true);
         return cargo;
     }
@@ -23,6 +24,7 @@ public class CargoLiderancaMapper {
         dto.setIdCargoLideranca(cargo.getIdCargoLideranca());
         dto.setNomeCargo(cargo.getNomeCargo());
         dto.setClassificacaoFinanceira(cargo.getClassificacaoFinanceira());
+        dto.setAtribuicaoIsenta(cargo.getAtribuicaoIsenta());
         dto.setAtivo(cargo.getAtivo());
         return dto;
     }
