@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.applications.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,10 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AlterarStatusAssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoStatusHistoricoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.service.AssociadoService;
 
@@ -47,6 +51,26 @@ public class AssociadosController {
 	@GetMapping("/{idAssociado}")
 	public ResponseEntity<AssociadoResponseDto> getAssociadoPorId(@PathVariable Long idAssociado) {
 		var response = associadoService.buscarAssociadoPorId(idAssociado);
+		return ResponseEntity.ok(response);
+	}
+
+	/**
+	 * Endpoint dedicado para mudança de status.
+	 * Gera log automático em AssociadoStatusHistorico.
+	 * Exclusivo da ADM — nenhuma transição ocorre automaticamente.
+	 */
+	@PutMapping("/{idAssociado}/status")
+	public ResponseEntity<AssociadoStatusHistoricoResponseDto> putAlterarStatus(
+			@PathVariable Long idAssociado,
+			@RequestBody @Valid AlterarStatusAssociadoRequestDto request) {
+		var response = associadoService.alterarStatus(idAssociado, request);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/{idAssociado}/status/historico")
+	public ResponseEntity<List<AssociadoStatusHistoricoResponseDto>> getHistoricoStatus(
+			@PathVariable Long idAssociado) {
+		var response = associadoService.buscarHistoricoStatusPorAssociado(idAssociado);
 		return ResponseEntity.ok(response);
 	}
 }
