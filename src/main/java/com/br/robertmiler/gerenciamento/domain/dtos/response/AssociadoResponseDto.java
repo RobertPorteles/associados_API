@@ -41,6 +41,14 @@ public class AssociadoResponseDto {
 	/** Preenchido apenas quando statusAssociado = INATIVO_PAUSA_PROGRAMADA. */
 	private LocalDate dataPrevisaoRetorno;
 
+	private LocalDate dataPagamentoPrimeiraAnuidade;
+
+	private String motivoStatusInativo;
+
+	private String nomePadrinho;
+
+	private String nomeEquipeOrigem;
+
 	private String nomeEquipe;
 
 	private String nomeCluster;

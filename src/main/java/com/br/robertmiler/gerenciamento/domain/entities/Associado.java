@@ -76,6 +76,12 @@ public class Associado {
     @Column(name = "data_previsao_retorno")
     private LocalDate dataPrevisaoRetorno;
 
+    @Column(name = "data_pagamento_primeira_anuidade")
+    private LocalDate dataPagamentoPrimeiraAnuidade;
+
+    @Column(name = "motivo_status_inativo")
+    private String motivoStatusInativo;
+
     @Column(name = "criado_em")
     private LocalDateTime criadoEm;
 

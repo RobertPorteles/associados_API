@@ -32,7 +32,6 @@ public class EmpresaService {
     @Autowired
     private PaginacaoMapper paginacaoMapper;
 	
-
 	@Transactional
 	public EmpresaResponseDto criar(EmpresaRequestDto requestDto) {
        

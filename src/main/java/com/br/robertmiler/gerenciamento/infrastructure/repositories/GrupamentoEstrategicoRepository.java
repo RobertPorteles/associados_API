@@ -12,7 +12,7 @@ import com.br.robertmiler.gerenciamento.domain.entities.GrupamentoEstrategico;
 @Repository
 public interface GrupamentoEstrategicoRepository extends JpaRepository<GrupamentoEstrategico, Long> {
 
-    Optional<GrupamentoEstrategico> findByNomeGrupamento(String nomeGrupamento);
+    Optional<GrupamentoEstrategico> findByNome(String nome);
 
     Optional<GrupamentoEstrategico> findBySigla(String sigla);
 

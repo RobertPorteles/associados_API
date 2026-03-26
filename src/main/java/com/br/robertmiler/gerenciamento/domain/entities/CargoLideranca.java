@@ -1,6 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
-import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesInsentas;
+import com.br.robertmiler.gerenciamento.domain.enums.AtribuicoesIsentas;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,7 +33,7 @@ public class CargoLideranca {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "atribuicao_isenta", nullable = true)
-    private AtribuicoesInsentas atribuicaoIsenta;
+    private AtribuicoesIsentas atribuicaoIsenta;
 
     @Column(name = "ativo")
     private Boolean ativo;

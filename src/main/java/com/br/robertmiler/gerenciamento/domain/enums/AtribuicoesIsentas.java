@@ -3,7 +3,7 @@ package com.br.robertmiler.gerenciamento.domain.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum AtribuicoesInsentas {
+public enum AtribuicoesIsentas {
     DE_DIRETOR_DE_EQUIPE("D.E- Diretor de Equipe"),
     DT3_DIRETOR_DE_TERRITORIO3("DT3- Diretor de Território 3"),
     DT2_DIRETOR_DE_TERRITORIO2("DT2- Diretor de Território 2"),
@@ -15,7 +15,7 @@ public enum AtribuicoesInsentas {
 
     private final String descricao;
 
-    AtribuicoesInsentas(String descricao) {
+    AtribuicoesIsentas(String descricao) {
         this.descricao = descricao;
     }
 
@@ -25,8 +25,8 @@ public enum AtribuicoesInsentas {
     }
 
     @JsonCreator
-    public static AtribuicoesInsentas fromString(String value) {
-        for (AtribuicoesInsentas atribuicao : AtribuicoesInsentas.values()) {
+    public static AtribuicoesIsentas fromString(String value) {
+        for (AtribuicoesIsentas atribuicao : AtribuicoesIsentas.values()) {
             if (atribuicao.descricao.equalsIgnoreCase(value) || atribuicao.name().equalsIgnoreCase(value)) {
                 return atribuicao;
             }

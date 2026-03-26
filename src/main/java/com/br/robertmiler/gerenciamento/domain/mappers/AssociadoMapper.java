@@ -31,6 +31,8 @@ public class AssociadoMapper {
 		novoAssociado.setStatusAssociado(request.getStatusAssociado());
 		novoAssociado.setDataInicioPausa(request.getDataInicioPausa());
 		novoAssociado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
+		novoAssociado.setDataPagamentoPrimeiraAnuidade(request.getDataPagamentoPrimeiraAnuidade());
+		novoAssociado.setMotivoStatusInativo(request.getMotivoStatusInativo());
 		novoAssociado.setCriadoEm(LocalDateTime.now());
 		novoAssociado.setAtualizadoEm(LocalDateTime.now());
 		return novoAssociado;
@@ -50,9 +52,13 @@ public class AssociadoMapper {
 		dto.setStatusAssociado(response.getStatusAssociado());
 		dto.setDataInicioPausa(response.getDataInicioPausa());
 		dto.setDataPrevisaoRetorno(response.getDataPrevisaoRetorno());
+		dto.setDataPagamentoPrimeiraAnuidade(response.getDataPagamentoPrimeiraAnuidade());
+		dto.setMotivoStatusInativo(response.getMotivoStatusInativo());
 		dto.setCriadoEm(response.getCriadoEm());
 		dto.setAtualizadoEm(response.getAtualizadoEm());
 		dto.setNomeEquipe(response.getEquipeAtual().getNomeEquipe());
+		if (response.getPadrinho() != null) dto.setNomePadrinho(response.getPadrinho().getNomeCompleto());
+		if (response.getEquipeOrigem() != null) dto.setNomeEquipeOrigem(response.getEquipeOrigem().getNomeEquipe());
 		dto.setNomeCluster(response.getCluster().getNome());
 		dto.setNomeAtuacaoEspecifica(response.getAtuacaoEspecifica().getNome());
 		return dto;

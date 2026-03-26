@@ -1,6 +1,6 @@
 package com.br.robertmiler.gerenciamento.domain.entities;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,14 +19,17 @@ public class GrupamentoEstrategico {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idGrupamento;
 
-    @Column(name = "nome_grupamento", unique = true)
-    private String nomeGrupamento;
+   private String nome; // Ex: "Construção Civil" 
+    private String sigla; // Ex: "CIVL" (Limite de 4 caracteres) 
+    private boolean ativo; // Para permitir inativar 
 
-    // Sigla de até 4 caracteres (ex: CIVL, IMOB, DIGI)
-    @Column(name = "sigla", unique = true, length = 4)
-    private String sigla;
-
-    @Column(name = "ativo")
-    private Boolean ativo;
+    public GrupamentoEstrategico(String nome, String sigla) {
+        if (sigla.length() != 4) {
+            throw new IllegalArgumentException("A sigla deve ter exatamente 4 caracteres.");
+        }
+        this.nome = nome;
+        this.sigla = sigla.toUpperCase();
+        this.ativo = true;
+    }
 
 }

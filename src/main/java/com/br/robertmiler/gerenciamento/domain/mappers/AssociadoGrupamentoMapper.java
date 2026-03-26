@@ -35,7 +35,7 @@ public class AssociadoGrupamentoMapper {
         AssociadoGrupamentoResponseDto dto = new AssociadoGrupamentoResponseDto();
         dto.setIdAssociadoGrupamento(vinculo.getIdAssociadoGrupamento());
         dto.setNomeAssociado(vinculo.getAssociado().getNomeCompleto());
-        dto.setNomeGrupamento(vinculo.getGrupamento().getNomeGrupamento());
+        dto.setNomeGrupamento(vinculo.getGrupamento().getNome());
         dto.setSigla(vinculo.getGrupamento().getSigla());
         dto.setDataInicio(vinculo.getDataInicio());
         dto.setDataFim(vinculo.getDataFim());

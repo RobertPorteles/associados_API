@@ -85,9 +85,11 @@ public class AssociadoRequestDto {
     @Positive(message = "O ID da atuação específica deve ser um número positivo.")
     private Long idAtuacaoEspecifica;
 
+    @NotNull(message = "O padrinho é obrigatório.")
     @Positive(message = "O ID do padrinho deve ser um número positivo.")
     private Long idPadrinho;
 
+    @NotNull(message = "A equipe de origem é obrigatória.")
     @Positive(message = "O ID da equipe de origem deve ser um número positivo.")
     private Long idEquipeOrigem;
 
@@ -95,6 +97,11 @@ public class AssociadoRequestDto {
      * Cargo de liderança inicial. Obrigatório no cadastro — todo associado
      * deve ter ao menos 1 cargo (PRD §2.1 Cargo de Liderança).
      */
+
+    private LocalDate dataPagamentoPrimeiraAnuidade;
+
+    private String motivoStatusInativo;
+
     @NotNull(message = "O cargo de liderança inicial é obrigatório.")
     @Positive(message = "O ID do cargo de liderança deve ser um número positivo.")
     private Long idCargoLideranca;

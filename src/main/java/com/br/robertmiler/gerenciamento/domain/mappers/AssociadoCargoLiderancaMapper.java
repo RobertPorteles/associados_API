@@ -26,8 +26,7 @@ public class AssociadoCargoLiderancaMapper {
 		AssociadoCargoLiderancaResponseDto dto = new AssociadoCargoLiderancaResponseDto();
 		dto.setIdAssociadoCargo(designacao.getIdAssociadoCargo());
 		dto.setNomeAssociado(designacao.getAssociado().getNomeCompleto());
-		dto.setNomeCargo(designacao.getCargoLideranca().getNomeCargo());
-		dto.setClassificacaoFinanceira(designacao.getCargoLideranca().getClassificacaoFinanceira());
+		dto.setNomeCargo(designacao.getCargoLideranca().getNomeCargo()); // 19.6 - Nome do cargo é visível
 		dto.setDataInicio(designacao.getDataInicio());
 		dto.setDataFim(designacao.getDataFim());
 		dto.setAtivo(designacao.getAtivo());

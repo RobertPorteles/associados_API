@@ -32,13 +32,13 @@ public class GrupamentoEstrategicoService {
     @Transactional
     public GrupamentoEstrategicoResponseDto cadastrarGrupamento(GrupamentoEstrategicoRequestDto request) {
 
-        grupamentoRepository.findByNomeGrupamento(FormataString.primeiraLetraMaiuscula(request.getNomeGrupamento()))
+        grupamentoRepository.findByNome(FormataString.primeiraLetraMaiuscula(request.getNomeGrupamento()))
                 .ifPresent(g -> {
                     throw new RegraNegocioException("Já existe um grupamento com este nome.");
                 });
 
-        var siglaUpper = request.getSigla().toUpperCase().trim();
-        grupamentoRepository.findBySigla(siglaUpper)
+        
+        grupamentoRepository.findBySigla(request.getSigla())
                 .ifPresent(g -> {
                     throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
                 });
@@ -55,7 +55,7 @@ public class GrupamentoEstrategicoService {
         var grupamento = buscarGrupamentoEntity(idGrupamento);
 
         var nomeNormalizado = FormataString.primeiraLetraMaiuscula(request.getNomeGrupamento());
-        var grupComMesmoNome = grupamentoRepository.findByNomeGrupamento(nomeNormalizado);
+        var grupComMesmoNome = grupamentoRepository.findByNome(nomeNormalizado);
         if (grupComMesmoNome.isPresent() && !grupComMesmoNome.get().getIdGrupamento().equals(idGrupamento)) {
             throw new RegraNegocioException("Já existe um grupamento com este nome.");
         }
@@ -66,7 +66,7 @@ public class GrupamentoEstrategicoService {
             throw new RegraNegocioException("Já existe um grupamento com esta sigla.");
         }
 
-        grupamento.setNomeGrupamento(nomeNormalizado);
+        grupamento.setNome(nomeNormalizado);
         grupamento.setSigla(siglaUpper);
         grupamento.setAtivo(request.getAtivo());
 
