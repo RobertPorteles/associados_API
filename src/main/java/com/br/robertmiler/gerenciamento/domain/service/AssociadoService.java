@@ -2,6 +2,8 @@ package com.br.robertmiler.gerenciamento.domain.service;
 
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.request.RenovacaoAnuidadeRequestDto;
+import com.br.robertmiler.gerenciamento.domain.enums.ClassificacaoFinanceira;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
@@ -109,7 +111,13 @@ public class AssociadoService {
 		associado.setEquipeOrigem(equipeOrigem);
 		associado.setPadrinho(padrinho);
 
-		associado.setDataVencimento(calcularDataVencimento(associado.getDataIngresso()));
+		// 3 - Aguardando: todo associado sempre inicia como PREATIVO, independente do valor enviado no DTO
+		associado.setStatusAssociado(StatusAssociado.PREATIVO);
+
+		// 4 - ISENTO: se o cargo inicial for isento, não aplica data de vencimento
+		boolean isento = ClassificacaoFinanceira.ISENTO.equals(cargoLideranca.getClassificacaoFinanceira());
+		associado.setDataVencimento(isento ? null : calcularDataVencimento(associado.getDataIngresso()));
+
 		associadoRepository.save(associado);
 
 		// Criar registro de visibilidade automaticamente
@@ -186,7 +194,8 @@ public class AssociadoService {
 		associado.setTelefonePrincipal(request.getTelefonePrincipal());
 		associado.setDataNascimento(request.getDataNascimento());
 		associado.setDataIngresso(request.getDataIngresso());
-		associado.setDataVencimento(calcularDataVencimento(request.getDataIngresso())); // 12.2 - Recalcular data de vencimento
+		// 12.2 + 4 - Recalcula vencimento apenas se não for isento
+		associado.setDataVencimento(isAssociadoIsento(idAssociado) ? null : calcularDataVencimento(request.getDataIngresso()));
 		associado.setDataPagamentoPrimeiraAnuidade(request.getDataPagamentoPrimeiraAnuidade()); // 10.1 - Data Pagamento Primeira Anuidade
 		associado.setMotivoStatusInativo(request.getMotivoStatusInativo()); // 16.6.4, 16.6.6 - Motivo para status inativo
 		associado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
@@ -278,16 +287,95 @@ public class AssociadoService {
 		}
 	}
 
-	// 12.2 - Regra de Cálculo para Data de Vencimento
+	// ── Item 3: Confirmação de Cadastro (PREATIVO → ATIVO) ──────────────────────
+
+	/**
+	 * Confirma o cadastro de um associado pré-ativo, transicionando seu status
+	 * para ATIVO. Apenas associados com status PREATIVO podem ser confirmados.
+	 */
+	@Transactional
+	public AssociadoResponseDto confirmarCadastro(Long idAssociado) {
+		var associado = buscarAssociadoEntity(idAssociado);
+
+		if (!StatusAssociado.PREATIVO.equals(associado.getStatusAssociado())) {
+			throw new RegraNegocioException(
+					"Somente associados com status 'Pré-ativo' podem ter o cadastro confirmado.");
+		}
+
+		associado.setStatusAssociado(StatusAssociado.ATIVO);
+		associado.setAtualizadoEm(LocalDateTime.now());
+		associadoRepository.save(associado);
+
+		return associadoMapper.toResponse(associado);
+	}
+
+	// ── Item 2: Renovação da Anuidade ────────────────────────────────────────────
+
+	/**
+	 * Registra a renovação da anuidade do associado.
+	 * <ul>
+	 *   <li>Registra {@code dataPagamentoPrimeiraAnuidade} se ainda não definida.</li>
+	 *   <li>Estende {@code dataVencimento} em +1 ano a partir do vencimento atual
+	 *       (ou recalcula se já vencida).</li>
+	 *   <li>Lança exceção se o associado for isento ou ainda estiver como PREATIVO.</li>
+	 * </ul>
+	 */
+	@Transactional
+	public AssociadoResponseDto renovarAnuidade(Long idAssociado, RenovacaoAnuidadeRequestDto request) {
+		var associado = buscarAssociadoEntity(idAssociado);
+
+		if (StatusAssociado.PREATIVO.equals(associado.getStatusAssociado())) {
+			throw new RegraNegocioException(
+					"Cadastro ainda não confirmado. Confirme o cadastro antes de renovar a anuidade.");
+		}
+
+		if (isAssociadoIsento(idAssociado)) {
+			throw new RegraNegocioException("Associado isento de anuidade. Renovação não aplicável.");
+		}
+
+		// Registra primeiro pagamento se ainda não definido
+		if (associado.getDataPagamentoPrimeiraAnuidade() == null) {
+			associado.setDataPagamentoPrimeiraAnuidade(request.getDataPagamento());
+		}
+
+		// Se ainda vigente, estende a partir do vencimento atual; se vencido, recalcula
+		LocalDate novaDataVencimento;
+		LocalDate hoje = LocalDate.now();
+		if (associado.getDataVencimento() != null && associado.getDataVencimento().isAfter(hoje)) {
+			novaDataVencimento = associado.getDataVencimento().plusYears(1);
+		} else {
+			novaDataVencimento = calcularDataVencimento(request.getDataPagamento());
+		}
+
+		associado.setDataVencimento(novaDataVencimento);
+		associado.setAtualizadoEm(LocalDateTime.now());
+		associadoRepository.save(associado);
+
+		return associadoMapper.toResponse(associado);
+	}
+
+	// ── Item 4: Helper ISENTO ─────────────────────────────────────────────────────
+
+	/**
+	 * Retorna {@code true} se o associado possuir ao menos um cargo ativo com
+	 * classificação financeira ISENTO.
+	 */
+	private boolean isAssociadoIsento(Long idAssociado) {
+		return associadoCargoLiderancaRepository.findByAssociado_IdAssociado(idAssociado)
+				.stream()
+				.filter(cargo -> Boolean.TRUE.equals(cargo.getAtivo()))
+				.anyMatch(cargo -> ClassificacaoFinanceira.ISENTO.equals(
+						cargo.getCargoLideranca().getClassificacaoFinanceira()));
+	}
+
+	// ── 12.2 - Regra de Cálculo para Data de Vencimento ─────────────────────────
+
 	private LocalDate calcularDataVencimento(LocalDate dataIngresso) {
 		if (dataIngresso == null) {
-			return null; // Or throw an exception, depending on business rule
+			return null;
 		}
-		// Add 1 month to dataIngresso
 		LocalDate proximoMes = dataIngresso.plusMonths(1);
-		// Set day to 1st
 		LocalDate primeiroDiaProximoMes = proximoMes.withDayOfMonth(1);
-		// Add 1 year
 		return primeiroDiaProximoMes.plusYears(1);
 	}
 }
