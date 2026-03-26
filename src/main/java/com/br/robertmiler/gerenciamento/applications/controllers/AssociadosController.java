@@ -1,10 +1,12 @@
 package com.br.robertmiler.gerenciamento.applications.controllers;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,10 +16,11 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.robertmiler.gerenciamento.domain.dtos.request.AlterarStatusAssociadoRequestDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.request.RenovacaoAnuidadeRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
-import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoStatusHistoricoResponseDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.service.AssociadoService;
 
@@ -54,23 +57,21 @@ public class AssociadosController {
 		return ResponseEntity.ok(response);
 	}
 
-	/**
-	 * Endpoint dedicado para mudança de status.
-	 * Gera log automático em AssociadoStatusHistorico.
-	 * Exclusivo da ADM — nenhuma transição ocorre automaticamente.
-	 */
-	@PutMapping("/{idAssociado}/status")
-	public ResponseEntity<AssociadoStatusHistoricoResponseDto> putAlterarStatus(
-			@PathVariable Long idAssociado,
-			@RequestBody @Valid AlterarStatusAssociadoRequestDto request) {
-		var response = associadoService.alterarStatus(idAssociado, request);
+	// Item 3 - Confirmar cadastro: transiciona PREATIVO → ATIVO
+	@PreAuthorize("hasRole('ADM')")
+	@PatchMapping("/{idAssociado}/confirmar-cadastro")
+	public ResponseEntity<AssociadoResponseDto> patchConfirmarCadastro(@PathVariable Long idAssociado) {
+		var response = associadoService.confirmarCadastro(idAssociado);
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/{idAssociado}/status/historico")
-	public ResponseEntity<List<AssociadoStatusHistoricoResponseDto>> getHistoricoStatus(
-			@PathVariable Long idAssociado) {
-		var response = associadoService.buscarHistoricoStatusPorAssociado(idAssociado);
+	// Item 2 - Renovação da anuidade
+	@PreAuthorize("hasRole('ADM')")
+	@PatchMapping("/{idAssociado}/renovar-anuidade")
+	public ResponseEntity<AssociadoResponseDto> patchRenovarAnuidade(
+			@PathVariable Long idAssociado,
+			@Valid @RequestBody RenovacaoAnuidadeRequestDto request) {
+		var response = associadoService.renovarAnuidade(idAssociado, request);
 		return ResponseEntity.ok(response);
 	}
 }

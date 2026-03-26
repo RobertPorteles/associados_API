@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,30 +25,36 @@ public class AssociadoCargoLiderancaController {
     @Autowired
     private AssociadoCargoLiderancaService associadoCargoService;
 
+    // Item 5 - classificacaoFinanceira visível apenas para ADM
+    @PreAuthorize("hasRole('ADM')")
     @PostMapping
     public ResponseEntity<AssociadoCargoLiderancaResponseDto> postDesignarCargo(@Valid @RequestBody AssociadoCargoLiderancaRequestDto request) {
         var response = associadoCargoService.designarCargo(request);
         return ResponseEntity.status(201).body(response);
     }
 
+    @PreAuthorize("hasRole('ADM')")
     @GetMapping("/{idAssociadoCargo}")
     public ResponseEntity<AssociadoCargoLiderancaResponseDto> getDesignacaoPorId(@PathVariable Long idAssociadoCargo) {
         var response = associadoCargoService.buscarDesignacaoPorId(idAssociadoCargo);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADM')")
     @PutMapping("/{idAssociadoCargo}")
     public ResponseEntity<?> putEditarDesignacao(@PathVariable Long idAssociadoCargo, @RequestBody AssociadoCargoLiderancaRequestDto request) {
         var response = associadoCargoService.editarDesignacao(idAssociadoCargo, request);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADM')")
     @GetMapping("/associado/{idAssociado}")
     public ResponseEntity<List<AssociadoCargoLiderancaResponseDto>> getCargosPorAssociado(@PathVariable Long idAssociado) {
         var response = associadoCargoService.buscarCargosPorAssociado(idAssociado);
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasRole('ADM')")
     @GetMapping("/cargo/{idCargoLideranca}")
     public ResponseEntity<List<AssociadoCargoLiderancaResponseDto>> getAssociadosPorCargo(@PathVariable Long idCargoLideranca) {
         var response = associadoCargoService.buscarAssociadosPorCargo(idCargoLideranca);

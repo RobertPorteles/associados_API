@@ -71,4 +71,9 @@ public class EmpresaEnderecoComercialService {
         return enderecoComercialMapper.montarDtoResposta(enderecoFound);
     }
 
+    @Transactional(readOnly = true)
+    public EmpresaEnderecoComercial buscarEnderecoComercialPorEmpresaEntity(Long idEmpresa) {
+        return enderecoComercialRepository.findByEmpresa_IdEmpresa(idEmpresa)
+                .orElseThrow(() -> new NaoEncontradoException("Endereço comercial não encontrado para a empresa informada."));
+    }
 }
