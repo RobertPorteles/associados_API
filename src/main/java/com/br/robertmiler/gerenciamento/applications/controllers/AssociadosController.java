@@ -1,5 +1,7 @@
 package com.br.robertmiler.gerenciamento.applications.controllers;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,9 +16,11 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.RenovacaoAnuidadeRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
+
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.service.AssociadoService;
 

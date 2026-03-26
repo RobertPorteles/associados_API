@@ -27,16 +27,23 @@ public class AssociadoEnderecoResidencialService {
     private AssociadoRepository associadoRepository;
  
     @Transactional
-    public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
-            Long idAssociado,
-            AssociadoEnderecoResidencialRequestDto request) {
- 
+   
+        public AssociadoEnderecoResidencialResponseDto cadastrarEnderecoResidencial(
+            Long idAssociado, 
+            AssociadoEnderecoResidencialRequestDto request) { 
+
+       
+
         var associadoFound = associadoRepository.findById(idAssociado)
                 .orElseThrow(() -> new NaoEncontradoException("Associado não encontrado."));
- 
+
+        // 3. Converte o DTO para Entidade de Endereço
         var novoEndereco = enderecoResidencialMapper.toEntity(request);
+        
+        // 4. Faz o Link da entidade inteira
         novoEndereco.setAssociado(associadoFound);
- 
+                
+        // 5. Salva e retorna
         enderecoResidencialRepository.save(novoEndereco);
  
         return enderecoResidencialMapper.toResponse(novoEndereco);

@@ -1,33 +1,42 @@
 package com.br.robertmiler.gerenciamento.domain.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.br.robertmiler.gerenciamento.domain.dtos.request.AlterarStatusAssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoEnderecoResidencialRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.AssociadoRequestDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.request.RenovacaoAnuidadeRequestDto;
-import com.br.robertmiler.gerenciamento.domain.enums.ClassificacaoFinanceira;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoResponseDto;
+import com.br.robertmiler.gerenciamento.domain.dtos.response.AssociadoStatusHistoricoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.dtos.response.PaginacaoResponseDto;
 import com.br.robertmiler.gerenciamento.domain.entities.Associado;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoCargoLideranca;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoEnderecoResidencial;
+import com.br.robertmiler.gerenciamento.domain.entities.AssociadoStatusHistorico;
 import com.br.robertmiler.gerenciamento.domain.entities.AssociadoVisibilidade;
+import com.br.robertmiler.gerenciamento.domain.enums.ClassificacaoFinanceira;
 import com.br.robertmiler.gerenciamento.domain.enums.StatusAssociado;
 import com.br.robertmiler.gerenciamento.domain.exceptions.JaCadastradoException;
 import com.br.robertmiler.gerenciamento.domain.exceptions.NaoEncontradoException;
 import com.br.robertmiler.gerenciamento.domain.exceptions.RegraNegocioException;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoEnderecoResidencialMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoMapper;
+import com.br.robertmiler.gerenciamento.domain.mappers.AssociadoStatusHistoricoMapper;
 import com.br.robertmiler.gerenciamento.domain.mappers.PaginacaoMapper;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoCargoLiderancaRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoEnderecoResidencialRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoRepository;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoStatusHistoricoRepository;
 import com.br.robertmiler.gerenciamento.infrastructure.repositories.AssociadoVisibilidadeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import com.br.robertmiler.gerenciamento.infrastructure.repositories.UsuarioRepository;
 
 @Service
 public class AssociadoService {
@@ -66,6 +75,15 @@ public class AssociadoService {
 	private CargoLiderancaService cargoLiderancaService;
 
 	@Autowired
+	private AssociadoStatusHistoricoRepository statusHistoricoRepository;
+
+	@Autowired
+	private AssociadoStatusHistoricoMapper statusHistoricoMapper;
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	@Autowired
 	private PaginacaoMapper paginacaoMapper;
 
 	@Transactional
@@ -91,7 +109,6 @@ public class AssociadoService {
 			throw new RegraNegocioException("Cargo de liderança é obrigatório.");
 		}
 
-
 		validarCamposPausaProgramada(request);
 
 		// Resolver FKs
@@ -101,7 +118,6 @@ public class AssociadoService {
 		var padrinho = buscarAssociadoEntity(request.getIdPadrinho());
 		var equipeOrigem = equipeService.buscarEquipeEntity(request.getIdEquipeOrigem());
 		var cargoLideranca = cargoLiderancaService.buscarCargoEntity(request.getIdCargoLideranca());
-
 
 		var associado = associadoMapper.toEntity(request);
 		associado.setEquipeAtual(equipeAtual);
@@ -162,10 +178,8 @@ public class AssociadoService {
 			throw new JaCadastradoException("CPF já cadastrado para outro associado.");
 		}
 
-		//Ve se o email existe
 		var emailExistente = associadoRepository.findByEmailPrincipal(request.getEmailPrincipal());
 		if (emailExistente.isPresent() && !emailExistente.get().getIdAssociado().equals(idAssociado)) {
-			// TODO: Consider if emailPrincipal can be changed by the associate via APP. If so, this check needs to be more nuanced.
 			throw new JaCadastradoException("E-mail já cadastrado para outro associado.");
 		}
 
@@ -180,15 +194,13 @@ public class AssociadoService {
 		validarCamposPausaProgramada(request);
 
 		var equipeAtual = equipeService.buscarEquipeEntity(request.getIdEquipe());
-		//area de atuação
 		var cluster = clusterService.buscarClusterEntity(request.getIdCluster());
-		//especialização
 		var atuacaoEspecifica = atuacaoEspecificaService.buscarAtuacaoEspecificaEntity(request.getIdAtuacaoEspecifica());
 		var padrinho = buscarAssociadoEntity(request.getIdPadrinho());
 		var equipeOrigem = equipeService.buscarEquipeEntity(request.getIdEquipeOrigem());
 
-		//cadastro comum
-		associado.setCpf(request.getCpf()); // 2.2 - CPF editável pela ADM
+		// 2.2 - CPF editável pela ADM
+		associado.setCpf(request.getCpf());
 		associado.setNomeCompleto(request.getNomeCompleto());
 		associado.setEmailPrincipal(request.getEmailPrincipal());
 		associado.setTelefonePrincipal(request.getTelefonePrincipal());
@@ -196,24 +208,20 @@ public class AssociadoService {
 		associado.setDataIngresso(request.getDataIngresso());
 		// 12.2 + 4 - Recalcula vencimento apenas se não for isento
 		associado.setDataVencimento(isAssociadoIsento(idAssociado) ? null : calcularDataVencimento(request.getDataIngresso()));
-		associado.setDataPagamentoPrimeiraAnuidade(request.getDataPagamentoPrimeiraAnuidade()); // 10.1 - Data Pagamento Primeira Anuidade
-		associado.setMotivoStatusInativo(request.getMotivoStatusInativo()); // 16.6.4, 16.6.6 - Motivo para status inativo
+		associado.setDataPagamentoPrimeiraAnuidade(request.getDataPagamentoPrimeiraAnuidade());
+		associado.setMotivoStatusInativo(request.getMotivoStatusInativo());
 		associado.setTipoOrigemEquipe(request.getTipoOrigemEquipe());
 		associado.setStatusAssociado(request.getStatusAssociado());
 		associado.setDataInicioPausa(request.getDataInicioPausa());
 		associado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
 		associado.setEquipeAtual(equipeAtual);
 		associado.setCluster(cluster);
-
-		//No futuro teremos que fazer um calculo doido
 		associado.setAtuacaoEspecifica(atuacaoEspecifica);
 		associado.setEquipeOrigem(equipeOrigem);
 		associado.setPadrinho(padrinho);
 		associado.setAtualizadoEm(LocalDateTime.now());
 
 		// 6.2 - Editar Endereço Residencial
-		// Assuming there's only one residential address per associate for simplicity.
-		// In a real scenario, you might have multiple addresses or a primary address.
 		var enderecoResidencial = enderecoResidencialRepository.findByAssociado_IdAssociado(idAssociado)
 				.stream().findFirst()
 				.orElseThrow(() -> new NaoEncontradoException("Endereço residencial não encontrado para o associado."));
@@ -244,6 +252,73 @@ public class AssociadoService {
 	public AssociadoResponseDto buscarAssociadoPorId(Long idAssociado) {
 		var associadoFound = buscarAssociadoEntity(idAssociado);
 		return associadoMapper.toResponse(associadoFound);
+	}
+
+	/**
+	 * Endpoint dedicado de mudança de status.
+	 * Toda alteração gera um registro imutável em AssociadoStatusHistorico.
+	 * Exclusivo da ADM — nenhuma transição ocorre automaticamente.
+	 */
+	@Transactional
+	public AssociadoStatusHistoricoResponseDto alterarStatus(Long idAssociado,
+			AlterarStatusAssociadoRequestDto request) {
+
+		var associado = buscarAssociadoEntity(idAssociado);
+		var statusAnterior = associado.getStatusAssociado();
+
+		// Regras de negócio por status
+		if (StatusAssociado.INATIVO_DESISTENCIA.equals(request.getStatusNovo())
+				|| StatusAssociado.INATIVO_DESLIGADO.equals(request.getStatusNovo())) {
+			if (request.getMotivo() == null || request.getMotivo().isBlank()) {
+				throw new RegraNegocioException(
+						"O motivo é obrigatório para os status 'Inativo - Desistência' e 'Inativo - Desligado'.");
+			}
+		}
+
+		if (StatusAssociado.INATIVO_PAUSA_PROGRAMADA.equals(request.getStatusNovo())) {
+			if (request.getDataInicioPausa() == null || request.getDataPrevisaoRetorno() == null) {
+				throw new RegraNegocioException(
+						"Para o status 'Inativo - Pausa Programada' é obrigatório informar a data de início da pausa e a data prevista de retorno.");
+			}
+		} else {
+			// Ao sair da pausa programada, limpa os campos
+			request.setDataInicioPausa(null);
+			request.setDataPrevisaoRetorno(null);
+		}
+
+		// Busca o usuário responsável pela alteração
+		var registradoPor = usuarioRepository.findById(request.getIdRegistradoPor())
+				.orElseThrow(() -> new NaoEncontradoException("Usuário responsável não encontrado."));
+
+		// Atualiza o associado
+		associado.setStatusAssociado(request.getStatusNovo());
+		associado.setDataInicioPausa(request.getDataInicioPausa());
+		associado.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
+		associado.setAtualizadoEm(LocalDateTime.now());
+		associadoRepository.save(associado);
+
+		// Grava o log imutável
+		var historico = new AssociadoStatusHistorico();
+		historico.setAssociado(associado);
+		historico.setStatusAnterior(statusAnterior);
+		historico.setStatusNovo(request.getStatusNovo());
+		historico.setMotivo(request.getMotivo());
+		historico.setDataInicioPausa(request.getDataInicioPausa());
+		historico.setDataPrevisaoRetorno(request.getDataPrevisaoRetorno());
+		historico.setRegistradoPor(registradoPor);
+		statusHistoricoRepository.save(historico);
+
+		return statusHistoricoMapper.toResponse(historico);
+	}
+
+	@Transactional(readOnly = true)
+	public List<AssociadoStatusHistoricoResponseDto> buscarHistoricoStatusPorAssociado(Long idAssociado) {
+		buscarAssociadoEntity(idAssociado); // garante que o associado existe
+		return statusHistoricoRepository
+				.findByAssociado_IdAssociadoOrderByRegistradoEmDesc(idAssociado)
+				.stream()
+				.map(statusHistoricoMapper::toResponse)
+				.collect(Collectors.toList());
 	}
 
 	public Associado buscarAssociadoEntity(Long idAssociado) {
@@ -313,12 +388,8 @@ public class AssociadoService {
 
 	/**
 	 * Registra a renovação da anuidade do associado.
-	 * <ul>
-	 *   <li>Registra {@code dataPagamentoPrimeiraAnuidade} se ainda não definida.</li>
-	 *   <li>Estende {@code dataVencimento} em +1 ano a partir do vencimento atual
-	 *       (ou recalcula se já vencida).</li>
-	 *   <li>Lança exceção se o associado for isento ou ainda estiver como PREATIVO.</li>
-	 * </ul>
+	 * Estende dataVencimento em +1 ano (ou recalcula se já vencida).
+	 * Lança exceção se o associado for isento ou ainda estiver como PREATIVO.
 	 */
 	@Transactional
 	public AssociadoResponseDto renovarAnuidade(Long idAssociado, RenovacaoAnuidadeRequestDto request) {
@@ -357,7 +428,7 @@ public class AssociadoService {
 	// ── Item 4: Helper ISENTO ─────────────────────────────────────────────────────
 
 	/**
-	 * Retorna {@code true} se o associado possuir ao menos um cargo ativo com
+	 * Retorna true se o associado possuir ao menos um cargo ativo com
 	 * classificação financeira ISENTO.
 	 */
 	private boolean isAssociadoIsento(Long idAssociado) {
